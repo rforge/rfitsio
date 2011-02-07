@@ -1,0 +1,32 @@
+useDynLib(rfitsio,
+# From "src/file_access.c"
+	  cfitsio_open_file,
+	  cfitsio_open_data,
+	  cfitsio_open_table,
+	  cfitsio_open_image,
+	  cfitsio_create_file,
+          cfitsio_close_file,
+# From "src/error.c"
+	  cfitsio_get_errstatus,
+	  cfitsio_get_errtext,
+	  cfitsio_reset_error_status,
+	  cfitsio_get_version,
+# From "src/hdu.c"
+	  cfitsio_get_num_hdus,
+	  cfitsio_get_hdu_num,
+	  cfitsio_movabs_hdu,
+	  cfitsio_movrel_hdu,
+	  cfitsio_movnam_hdu,
+	  cfitsio_get_hdu_type,
+# From "src/hdr.c"
+          cfitsio_get_num_of_keys,
+          cfitsio_get_available_key_slots,
+# From "src/tables.c"
+          cfitsio_get_num_rows,
+          cfitsio_get_num_cols,
+          cfitsio_get_colnum,
+          cfitsio_get_coltype,
+          cfitsio_get_eqcoltype
+)
+
+exportPattern("^[^\\.]")

@@ -1,0 +1,12 @@
+Package: RFITSIO
+Type: Package
+Title: R wrapper to the CFITSIO library
+Version: 1.0
+Date: 2011-01-26
+Author: Maurizio Tomasi
+Maintainer: Maurizio Tomasi <maurizio.tomasi@unimi.it>
+Description: This package provides a farily complete wrapper to the NASA
+             CFITSIO library and allows R programs to access FITS files.
+SystemDepends: cfitsio
+License: GPL-2
+LazyLoad: yes
