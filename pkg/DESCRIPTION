@@ -1,4 +1,4 @@
-Package: RFITSIO
+Package: rfitsio
 Type: Package
 Title: R wrapper to the CFITSIO library
 Version: 1.0

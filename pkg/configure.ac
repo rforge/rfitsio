@@ -5,7 +5,7 @@ AC_PREREQ(2.61)
 
 ## ---[ VERSION ]-------------------------------------------------------------
 
-AC_INIT([RFITSIO], 1.0.0)
+AC_INIT([rfitsio], 1.0.0)
 
 dnl Select an optional include path, from a configure option
 dnl or from an environment variable.
