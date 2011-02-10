@@ -220,3 +220,14 @@ getEqColumnInformation <- function(fits.obj, column.num)
 
   return(.Call("cfitsio_get_eqcoltype", fits.obj, as.integer (column.num)));
 }    
+
+readColumn <- function(fits.obj, data.type, column.num,
+                       first.row, first.element, num.of.elements)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  return(.Call("cfitsio_read_col",fits.obj, data.type,
+               as.integer(column.num), as.integer(first.row),
+               as.integer(first.element), as.integer(num.of.elements)));
+}

@@ -285,24 +285,41 @@ cfitsio_read_col (SEXP fits_object,
     case TDOUBLE:   PLAIN_COPY(REALSXP, REAL,    double,         NA_REAL);
 
     case TSTRING: {
-	SEXP result;
+	SEXP result_array;
 	char ** array;
 	int i;
+	int type_code = -1;
+	LONGLONG repeat = -1;
+	LONGLONG width = -1;
 
+	/* Determine the length of each string in the specified column */
+	fits_get_coltypell (fits->cfitsio_ptr, column, &type_code,
+			    &repeat, &width, &(fits->status));
+
+	/* Allocate room for each string */
 	array = malloc (sizeof (char *) * num_of_elements);
+	for (i = 0; i < num_of_elements; ++i)
+	    array[i] = malloc (sizeof (char) * width);
+
+	/* Read the column */
 	fits_read_col_str (fits->cfitsio_ptr, column, first_row,
 			   first_element, num_of_elements, "", array,
 			   NULL, &(fits->status));
 
-	PROTECT(result = allocVector (STRSXP, num_of_elements));
+	/* Convert the array of C strings into a vector of R strings */
+	PROTECT(result_array = allocVector (STRSXP, num_of_elements));
 	for (i = 0; i < num_of_elements; ++i)
-	    SET_VECTOR_ELT(result, i, mkString (array[i]));
+	    SET_STRING_ELT(result_array, i, mkChar (array[i]));
 	UNPROTECT(1);
+
+	/* Free the memory allocated for the C strings */
+	for (i = 0; i < num_of_elements; ++i)
+	    free (array[i]);
 
 	free (array);
 	free (null_array);
 
-	return result;
+	return result_array;
     }
 
     case TCOMPLEX:	COMPLEX_COPY(float);
