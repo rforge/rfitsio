@@ -100,7 +100,7 @@ resetErrorStatus <- function(fits.obj)
   .Call("cfitsio_reset_error_status", fits.obj)
 }
 
-getVersion <- function()
+getCFITSIOVersion <- function()
 {
   return(.Call("cfitsio_get_version"))
 }
