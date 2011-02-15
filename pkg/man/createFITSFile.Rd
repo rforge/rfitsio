@@ -23,6 +23,6 @@
 }
 \author{Maurizio Tomasi <maurizio.tomasi@unimi.it>}
 \examples{
-fits.obj <- createFITSFile("/tmp/!foo.fits")  # ! prevents errors if the file exists
+fits.obj <- createFITSFile("!/tmp/foo.fits")  # ! prevents errors if file exists
 rm(fits.obj)
 }

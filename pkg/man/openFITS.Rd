@@ -32,7 +32,7 @@
 \seealso{
 	\code{\link{closeFITSFile}}, \code{\link{getErrorStatus}}.
 }
-\author{Maurizio Tomasi <maurizio.tomasi@unimi.it>}
+\author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- openFITSFile("table.fits")
 rm(fits.obj)

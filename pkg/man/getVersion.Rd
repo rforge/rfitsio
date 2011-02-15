@@ -11,7 +11,7 @@
 	version number.
 
 }
-\author{Maurizio Tomasi <maurizio.tomasi@unimi.it>}
+\author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 version <- getCFITSIOVersion()
 trunc(version)                      # Major version number

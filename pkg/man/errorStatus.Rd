@@ -45,7 +45,7 @@
 	\code{resetErrorStatus} function.)
 
 }
-\author{Maurizio Tomasi <maurizio.tomasi@unimi.it>}
+\author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 # Try to open a file which does not exist
 fits.obj <- openFITSFile("error-this-does-not-exist.fits")

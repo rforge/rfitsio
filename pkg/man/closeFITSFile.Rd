@@ -1,4 +1,5 @@
 \name{closeFITSFile}
+\alias{closeFITSFile}
 \title{Close a FITS file object}
 \description{Close a FITS flie, flushing the cache to disk, and release the memory associated with it.}
 \usage{
@@ -14,7 +15,7 @@
 	result by using \code{\link{rm}} with \code{fits.obj}.
 
 }
-\author{Maurizio Tomasi <maurizio.tomasi@unimi.it>}
+\author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- createFITSFile("!/tmp/test.fits")
 closeFITSFile(fits.obj)                 # This is the same as rm(fits.obj)
