@@ -38,27 +38,27 @@ is.fits.obj <- function (fits.obj)
 
 openFITSFile <- function(file.name, mode = "READONLY")
 {
-  return (.open("cfitsio_open_file", file.name, mode))
+  return (.open(cfitsio_open_file, file.name, mode))
 }
 
 openFITSData <- function(file.name, mode = "READONLY")
 {
-  return (.open("cfitsio_open_data", file.name, mode))
+  return (.open(cfitsio_open_data, file.name, mode))
 }
 
 openFITSImage <- function(file.name, mode = "READONLY")
 {
-  return (.open("cfitsio_open_image", file.name, mode))
+  return (.open(cfitsio_open_image, file.name, mode))
 }
 
 openFITSTable <- function(file.name, mode = "READONLY")
 {
-  return (.open("cfitsio_open_table", file.name, mode))
+  return (.open(cfitsio_open_table, file.name, mode))
 }
 
 createFITSFile <- function(file.name)
 {
-  fits.obj <- .Call("cfitsio_create_file", as.character (file.name))
+  fits.obj <- .Call(cfitsio_create_file, as.character (file.name))
   class(fits.obj) <- "cfitsio_obj"
   return(fits.obj)
 }
@@ -68,7 +68,7 @@ closeFITSFile <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  .Call("cfitsio_close_file", fits.obj)
+  .Call(cfitsio_close_file, fits.obj)
 }
 
 ######################################################################
@@ -79,7 +79,7 @@ getErrorStatus <- function(fits.obj, reset = FALSE)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_errstatus", fits.obj,
+  return(.Call(cfitsio_get_errstatus, fits.obj,
                as.logical (reset)))
 }
 
@@ -88,7 +88,7 @@ getErrorText <- function(fits.obj, reset = FALSE)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_errtext", fits.obj,
+  return(.Call(cfitsio_get_errtext, fits.obj,
                as.logical (reset)))
 }
 
@@ -97,7 +97,7 @@ resetErrorStatus <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  .Call("cfitsio_reset_error_status", fits.obj)
+  .Call(cfitsio_reset_error_status, fits.obj)
 }
 
 getCFITSIOVersion <- function()
@@ -113,7 +113,7 @@ getNumOfHDUs <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_num_hdus", fits.obj))
+  return(.Call(cfitsio_get_num_hdus, fits.obj))
 }
 
 getCurrentHDUNum <- function(fits.obj)
@@ -121,7 +121,7 @@ getCurrentHDUNum <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_hdu_num", fits.obj))
+  return(.Call(cfitsio_get_hdu_num, fits.obj))
 }
 
 getCurrentHDUType <- function(fits.obj)
@@ -129,7 +129,7 @@ getCurrentHDUType <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_hdu_type", fits.obj))
+  return(.Call(cfitsio_get_hdu_type, fits.obj))
 }
 
 moveAbsHDU <- function(fits.obj, hdu.num)
@@ -137,7 +137,7 @@ moveAbsHDU <- function(fits.obj, hdu.num)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_movabs_hdu", fits.obj, as.integer(hdu.num)))
+  return(.Call(cfitsio_movabs_hdu, fits.obj, as.integer(hdu.num)))
 }
 
 moveRelHDU <- function(fits.obj, hdu.rel.num)
@@ -145,7 +145,7 @@ moveRelHDU <- function(fits.obj, hdu.rel.num)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_movrel_hdu", fits.obj, as.integer(hdu.rel.num)))
+  return(.Call(cfitsio_movrel_hdu, fits.obj, as.integer(hdu.rel.num)))
 }
 
 moveNamedHDU <- function(fits.obj, hdu.type, ext.name, ext.ver = 0)
@@ -153,7 +153,7 @@ moveNamedHDU <- function(fits.obj, hdu.type, ext.name, ext.ver = 0)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_movnam_hdu", fits.obj,
+  return(.Call(cfitsio_movnam_hdu, fits.obj,
                as.character (hdu.type),
                as.character (ext.name),
                as.integer(ext.ver)))
@@ -167,7 +167,7 @@ getNumOfKeys <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_num_of_keys", fits.obj))
+  return(.Call(cfitsio_get_num_of_keys, fits.obj))
 }
 
 getAvailableKeySlots <- function(fits.obj)
@@ -175,7 +175,7 @@ getAvailableKeySlots <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_available_key_slots", fits.obj))
+  return(.Call(cfitsio_get_available_key_slots, fits.obj))
 }
 
 ######################################################################
@@ -186,7 +186,7 @@ getNumOfRows <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_num_rows", fits.obj))
+  return(.Call(cfitsio_get_num_rows, fits.obj))
 }
 
 getNumOfColumns <- function(fits.obj)
@@ -194,15 +194,27 @@ getNumOfColumns <- function(fits.obj)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_num_cols", fits.obj))
+  return(.Call(cfitsio_get_num_cols, fits.obj))
 }
 
-getColumnNumber <- function(fits.obj, template, casesen = TRUE)
+getColumnNumber <- function(fits.obj, template, casesen = FALSE)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_colnum", fits.obj, as.logical (casesen), as.character (template)))
+  return(.Call(cfitsio_get_colnum, fits.obj,
+               as.logical (casesen),
+               as.character (template)))
+}
+
+getColumnName <- function(fits.obj, template, casesen = FALSE)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  return(.Call(cfitsio_get_colname, fits.obj,
+               as.logical (casesen),
+               as.character (template)))
 }
 
 getColumnInformation <- function(fits.obj, column.num)
@@ -210,7 +222,7 @@ getColumnInformation <- function(fits.obj, column.num)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_coltype", fits.obj, as.integer (column.num)));
+  return(.Call(cfitsio_get_coltype, fits.obj, as.integer (column.num)));
 }    
 
 getEqColumnInformation <- function(fits.obj, column.num)
@@ -218,7 +230,7 @@ getEqColumnInformation <- function(fits.obj, column.num)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_get_eqcoltype", fits.obj, as.integer (column.num)));
+  return(.Call(cfitsio_get_eqcoltype, fits.obj, as.integer (column.num)));
 }    
 
 readColumn <- function(fits.obj, data.type, column.num,
@@ -227,7 +239,7 @@ readColumn <- function(fits.obj, data.type, column.num,
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  return(.Call("cfitsio_read_col",fits.obj, data.type,
+  return(.Call(cfitsio_read_col, fits.obj, data.type,
                as.integer(column.num), as.integer(first.row),
                as.integer(first.element), as.integer(num.of.elements)));
 }

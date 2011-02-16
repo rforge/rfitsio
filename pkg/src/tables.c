@@ -80,6 +80,37 @@ cfitsio_get_colnum (SEXP fits_object,
 
 /********************************************************************/
 
+/* Wrapper to fits_get_colname */
+SEXP
+cfitsio_get_colname (SEXP fits_object,
+		    SEXP case_sensitive,
+		    SEXP template)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+    int case_flag;
+
+    case_flag = asLogical (case_sensitive) ? CASESEN : CASEINSEN;
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    {
+	char column_name[FLEN_VALUE];
+	int column_index;
+
+	fits_get_colname (fits->cfitsio_ptr,
+			  case_flag,
+			  NM(template),
+			  column_name,
+			  &column_index,
+			  &(fits->status));
+
+	return mkString (column_name);
+    }
+    else
+	return mkString ("");   
+}
+
+/********************************************************************/
+
 /* Wrapper to fits_get_coltypell */
 SEXP
 get_coltype (SEXP fits_object,

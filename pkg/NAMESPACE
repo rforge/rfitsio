@@ -30,4 +30,29 @@ useDynLib(rfitsio,
           cfitsio_read_col
 )
 
-exportPattern("^[^\\.]")
+# We explicitly list the functions to be exported because we do not
+# want the low-level C functions to be visible outside
+export(is.fits.obj,
+       openFITSFile,
+       openFITSData,
+       openFITSTable,
+       createFITSFile,
+       closeFITSFile,
+       getErrorStatus,
+       getErrorText,
+       resetErrorStatus,
+       getCFITSIOVersion,
+       getNumOfHDUs,
+       getCurrentHDUNum,
+       getCurrentHDUType,
+       moveAbsHDU,
+       moveRelHDU,
+       moveNamedHDU,
+       getNumOfKeys,
+       getAvailableKeySlots,
+       getNumOfRows,
+       getNumOfColumns,
+       getColumnNumber,
+       getColumnInformation,
+       getEqColumnInformation,
+       readColumn)
