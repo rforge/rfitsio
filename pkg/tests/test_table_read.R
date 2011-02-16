@@ -38,67 +38,69 @@ if (getErrorStatus(fits.obj) == 0) {
 # TLOGICAL/TBIT columns
 
 moveAbsHDU(fits.obj, 2)
-num.of.rows <- getNumOfRows(fits.obj)
-num.of.columns <- getNumOfColumns(fits.obj)
+num.of.rows.2 <- getNumOfRows(fits.obj)
+num.of.columns.2 <- getNumOfColumns(fits.obj)
 
-if (num.of.columns != 2)
+if (num.of.columns.2 != 2)
   error("Wrong number of columns in HDU#2")
 
-col.1 <- readColumn(fits.obj, "TLOGICAL", 1, 1, 1, num.of.rows)
-col.2 <- readColumn(fits.obj, "TBIT",     2, 1, 1, num.of.rows * 8)
+log.col.1 <- readColumn(fits.obj, "TLOGICAL", 1, 1, 1, num.of.rows.2)
+log.col.2 <- readColumn(fits.obj, "TBIT",     2, 1, 1, num.of.rows.2 * 8)
 
 ######################################################################
 # Integer columns
 
 moveAbsHDU(fits.obj, 3)
-num.of.rows <- getNumOfRows(fits.obj)
-num.of.columns <- getNumOfColumns(fits.obj)
+num.of.rows.3 <- getNumOfRows(fits.obj)
+num.of.columns.3 <- getNumOfColumns(fits.obj)
 
-if (num.of.columns != 7)
+if (num.of.columns.3 != 7)
   error("Wrong number of columns in HDU#3")
 
-col.1 <- readColumn(fits.obj, "TSBYTE",    1, 1, 1, num.of.rows)
-col.2 <- readColumn(fits.obj, "TBYTE",     2, 1, 1, num.of.rows)
-col.3 <- readColumn(fits.obj, "TSHORT",    3, 1, 1, num.of.rows)
-col.4 <- readColumn(fits.obj, "TUSHORT",   4, 1, 1, num.of.rows)
-col.5 <- readColumn(fits.obj, "TLONG",     5, 1, 1, num.of.rows)
-col.6 <- readColumn(fits.obj, "TULONG",    6, 1, 1, num.of.rows)
-col.7 <- readColumn(fits.obj, "TLONGLONG", 7, 1, 1, num.of.rows)
+int.col.1 <- readColumn(fits.obj, "TSBYTE",    1, 1, 1, num.of.rows.3)
+int.col.2 <- readColumn(fits.obj, "TBYTE",     2, 1, 1, num.of.rows.3)
+int.col.3 <- readColumn(fits.obj, "TSHORT",    3, 1, 1, num.of.rows.3)
+int.col.4 <- readColumn(fits.obj, "TUSHORT",   4, 1, 1, num.of.rows.3)
+int.col.5 <- readColumn(fits.obj, "TLONG",     5, 1, 1, num.of.rows.3)
+int.col.6 <- readColumn(fits.obj, "TULONG",    6, 1, 1, num.of.rows.3)
+int.col.7 <- readColumn(fits.obj, "TLONGLONG", 7, 1, 1, num.of.rows.3)
 
 ######################################################################
 # Real columns
 
 moveAbsHDU(fits.obj, 4)
-num.of.rows <- getNumOfRows(fits.obj)
-num.of.columns <- getNumOfColumns(fits.obj)
+num.of.rows.4 <- getNumOfRows(fits.obj)
+num.of.columns.4 <- getNumOfColumns(fits.obj)
 
-if (num.of.columns != 2)
+if (num.of.columns.4 != 2)
   error("Wrong number of columns in HDU#4")
 
-col.1 <- readColumn(fits.obj, "TFLOAT",  1, 1, 1, num.of.rows)
-col.2 <- readColumn(fits.obj, "TDOUBLE", 2, 1, 1, num.of.rows)
+flt.col.1 <- readColumn(fits.obj, "TFLOAT",  1, 1, 1, num.of.rows.4)
+flt.col.2 <- readColumn(fits.obj, "TDOUBLE", 2, 1, 1, num.of.rows.4)
 
 ######################################################################
 # Complex columns
 
 moveAbsHDU(fits.obj, 5)
-num.of.rows <- getNumOfRows(fits.obj)
-num.of.columns <- getNumOfColumns(fits.obj)
+num.of.rows.5 <- getNumOfRows(fits.obj)
+num.of.columns.5 <- getNumOfColumns(fits.obj)
 
-if (num.of.columns != 2)
+if (num.of.columns.5 != 2)
   error("Wrong number of columns in HDU#5")
 
-col.1 <- readColumn(fits.obj, "TCOMPLEX",    1, 1, 1, num.of.rows)
-col.2 <- readColumn(fits.obj, "TDBLCOMPLEX", 2, 1, 1, num.of.rows)
+cmp.col.1 <- readColumn(fits.obj, "TCOMPLEX",    1, 1, 1, num.of.rows.5)
+cmp.col.2 <- readColumn(fits.obj, "TDBLCOMPLEX", 2, 1, 1, num.of.rows.5)
 
 ######################################################################
 # String columns
 
 moveAbsHDU(fits.obj, 6)
-num.of.rows <- getNumOfRows(fits.obj)
-num.of.columns <- getNumOfColumns(fits.obj)
+num.of.rows.6 <- getNumOfRows(fits.obj)
+num.of.columns.6 <- getNumOfColumns(fits.obj)
 
 if (num.of.columns != 1)
   error("Wrong number of columns in HDU#6")
 
-col.1 <- readColumn(fits.obj, "TSTRING", 1, 1, 1, num.of.rows)
+str.col.1 <- readColumn(fits.obj, "TSTRING", 1, 1, 1, num.of.rows.6)
+
+rm(fits.obj)
