@@ -19,9 +19,9 @@
 
 }
 \seealso{
-	\code{\link{openFITS}}, \code{\link{closeFITSFile}}, \code{\link{getErrorStatus}}.
+	\code{\link{openFITSFile}}, \code{\link{closeFITSFile}}, \code{\link{getErrorStatus}}.
 }
-\author{Maurizio Tomasi <maurizio.tomasi@unimi.it>}
+\author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- createFITSFile("!/tmp/foo.fits")  # ! prevents errors if file exists
 rm(fits.obj)
