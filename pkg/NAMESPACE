@@ -25,6 +25,7 @@ useDynLib(rfitsio,
           cfitsio_get_num_rows,
           cfitsio_get_num_cols,
           cfitsio_get_colnum,
+          cfitsio_get_colname,
           cfitsio_get_coltype,
           cfitsio_get_eqcoltype,
           cfitsio_read_col
