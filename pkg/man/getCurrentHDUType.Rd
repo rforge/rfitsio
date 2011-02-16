@@ -18,7 +18,7 @@
 
 	\item{fits.obj}{A FITS object, returned e.g. by
 	\code{\link{openFITSFile}}}.
-
+}
 \value{
 
 	A string representing the kind of the currently selected HDU

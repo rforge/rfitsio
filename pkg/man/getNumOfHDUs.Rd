@@ -17,7 +17,7 @@
 \arguments{
 
 	\item{fits.obj}{A FITS object, returned e.g. by
-	\code{\link{openFITSFile}}.
+	\code{\link{openFITSFile}}.}
 
 }
 \value{

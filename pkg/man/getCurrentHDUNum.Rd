@@ -20,6 +20,7 @@
 	\item{fits.obj}{A FITS object, returned e.g. by
 	\code{\link{openFITSFile}}.}
 
+}
 \value{
 
 	A integer number representing the index of the current HDU in
