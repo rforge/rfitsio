@@ -69,9 +69,13 @@ cfitsio_finalizer (SEXP fits_object)
 SEXP
 fits_ptr2SEXP (fits_file_t * fits)
 {
-    SEXP return_value = R_MakeExternalPtr (fits, R_NilValue, R_NilValue);
+    SEXP return_value;
+
+    PROTECT (return_value = R_MakeExternalPtr (fits, R_NilValue, R_NilValue));
     assert (return_value != R_NilValue);
     R_RegisterCFinalizer (return_value, cfitsio_finalizer);
+    UNPROTECT (1);
+
     return return_value;
 }
 
