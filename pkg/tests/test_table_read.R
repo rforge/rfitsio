@@ -98,7 +98,7 @@ moveAbsHDU(fits.obj, 6)
 num.of.rows.6 <- getNumOfRows(fits.obj)
 num.of.columns.6 <- getNumOfColumns(fits.obj)
 
-if (num.of.columns != 1)
+if (num.of.columns.6 != 1)
   error("Wrong number of columns in HDU#6")
 
 str.col.1 <- readColumn(fits.obj, "TSTRING", 1, 1, 1, num.of.rows.6)
