@@ -56,11 +56,17 @@ void
 cfitsio_finalizer (SEXP fits_object)
 {
     fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+    if (fits == NULL)
+	return;
 
-    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    if (NULL != fits->cfitsio_ptr)
+    {
 	fits_close_file (fits->cfitsio_ptr, &(fits->status));
+	fits->cfitsio_ptr = NULL;
+    }
 
     Free (fits);
+    R_ClearExternalPtr (fits_object);
 }
 
 /********************************************************************/
@@ -71,9 +77,10 @@ fits_ptr2SEXP (fits_file_t * fits)
 {
     SEXP return_value;
 
-    PROTECT (return_value = R_MakeExternalPtr (fits, R_NilValue, R_NilValue));
+    PROTECT (return_value = R_MakeExternalPtr (fits, install("fitsio_handle"),
+					       R_NilValue));
     assert (return_value != R_NilValue);
-    R_RegisterCFinalizer (return_value, cfitsio_finalizer);
+    R_RegisterCFinalizerEx (return_value, cfitsio_finalizer, TRUE);
     UNPROTECT (1);
 
     return return_value;
@@ -124,20 +131,4 @@ cfitsio_create_file (SEXP file_name)
 		      &(fits->status));
 
     return fits_ptr2SEXP (fits);
-}
-
-/********************************************************************/
-
-/* Wrapper to fits_close_file */
-SEXP
-cfitsio_close_file (SEXP fits_object)
-{
-    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
-
-    if (NULL != fits && NULL != fits->cfitsio_ptr)
-    {
-	fits_close_file (fits->cfitsio_ptr, &(fits->status));
-	fits->cfitsio_ptr = NULL;
-	fits->status = 0;
-    }
 }
