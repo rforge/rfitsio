@@ -37,4 +37,12 @@
 	\code{\link{getCurrentHDUNum}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
-
+\examples{
+file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
+fits.obj <- openFITSFile(file.name)
+for (cur.hdu in 1:getNumOfHDUs(fits.obj)) \{
+    moveAbsHDU(fits.obj, cur.hdu)
+    cur.hdu.type <- getCurrentHDUType(fits.obj)
+    cat(sprintf("HDU \%d is of type \%s\\n", cur.hdu, cur.hdu.type))
+\}
+}

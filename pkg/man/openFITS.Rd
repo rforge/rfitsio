@@ -28,12 +28,20 @@
 	Errors occurred during the execution of these functions can be
 	checked using \code{\link{getErrorStatus}}.
 
+	The file is automatically closed when \code{fits.obj} is
+	disposed by the garbage collector.
+
 }
 \seealso{
-	\code{\link{closeFITSFile}}, \code{\link{getErrorStatus}}.
+	\code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
-fits.obj <- openFITSFile("table.fits")
-rm(fits.obj)
+file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
+fits.obj <- openFITSFile(file.name)
+if (getErrorStatus(fits.obj) != 0) {
+   error(sprintf("Unable to open file \%s, reason: \%s",
+                 file.name,
+		 getErrorText(fits.obj)))
+}
 }

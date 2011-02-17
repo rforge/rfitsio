@@ -17,9 +17,12 @@
 	begins with \code{!}: in the latter case, the exclamation mark
 	is removed and the file is overwritten when necessary.
 
+	The file is closed automatically when \code{fits.obj} is
+	disposed by the garbage collector.
+
 }
 \seealso{
-	\code{\link{openFITSFile}}, \code{\link{closeFITSFile}}, \code{\link{getErrorStatus}}.
+	\code{\link{openFITSFile}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{

@@ -31,4 +31,9 @@
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
+file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
+fits.obj <- openFITSFile(file.name)
+cat(sprintf("Number of HDUs in file \%s: \%d\\n",
+            file.name,
+	    getNumOfHDUs(fits.obj)));
 }
