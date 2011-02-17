@@ -63,14 +63,6 @@ createFITSFile <- function(file.name)
   return(fits.obj)
 }
 
-closeFITSFile <- function(fits.obj)
-{
-  if (! is.fits.obj(fits.obj))
-    stop(.message.wrong.fits.obj.type)
-
-  .Call(cfitsio_close_file, fits.obj)
-}
-
 ######################################################################
 # R wrappers to functions in "src/error.c"
 
