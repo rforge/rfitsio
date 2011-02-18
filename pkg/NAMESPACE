@@ -56,6 +56,7 @@ export(is.fits.obj,
        getNumOfRows,
        getNumOfColumns,
        getColumnNumber,
+       getColumnName,
        getColumnInformation,
        getEqColumnInformation,
        readColumn)
