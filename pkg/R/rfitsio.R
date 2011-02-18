@@ -170,6 +170,22 @@ getAvailableKeySlots <- function(fits.obj)
   return(.Call(cfitsio_get_available_key_slots, fits.obj))
 }
 
+readRecord <- function(fits.obj, key.number)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  return(.Call(cfitsio_read_record, fits.obj, as.integer(key.number)))
+}
+
+readCard <- function(fits.obj, key.name)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  return(.Call(cfitsio_read_card, fits.obj, as.character(key.name)))
+}
+
 ######################################################################
 # R wrappers to functions in "src/tables.c"
 

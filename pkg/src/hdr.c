@@ -62,3 +62,43 @@ cfitsio_get_available_key_slots (SEXP fits_object)
     else
 	return ScalarInteger (-1);
 }
+
+/********************************************************************/
+
+/* Wrapper to fits_read_record */
+SEXP
+cfitsio_read_record (SEXP fits_object, SEXP key_number)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits->cfitsio_ptr)
+    {
+	char record[FLEN_VALUE + 1];
+
+	fits_read_record (fits->cfitsio_ptr, asInteger (key_number),
+			  record, &(fits->status));
+	return mkString (record);
+    }
+    else
+	return mkString ("");
+}
+
+/********************************************************************/
+
+/* Wrapper to fits_read_card */
+SEXP
+cfitsio_read_card (SEXP fits_object, SEXP key_name)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits->cfitsio_ptr)
+    {
+	char record[FLEN_VALUE + 1];
+
+	fits_read_card (fits->cfitsio_ptr, NM (key_name),
+			record, &(fits->status));
+	return mkString (record);
+    }
+    else
+	return mkString ("");
+}
