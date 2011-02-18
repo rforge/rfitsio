@@ -93,7 +93,7 @@ cfitsio_get_colname (SEXP fits_object,
 
     if (NULL != fits && NULL != fits->cfitsio_ptr)
     {
-	char column_name[FLEN_VALUE];
+	char column_name[FLEN_VALUE + 1];
 	int column_index;
 
 	fits_get_colname (fits->cfitsio_ptr,
