@@ -355,6 +355,8 @@ cfitsio_read_col (SEXP fits_object,
 
     case TCOMPLEX:	COMPLEX_COPY(float);
     case TDBLCOMPLEX:	COMPLEX_COPY(double);
-    default: return R_NilValue;
+    default:
+	error ("Invalid value for 'data.type' in readColumn"); 
+	return R_NilValue;
     }
 }
