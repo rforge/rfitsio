@@ -104,3 +104,45 @@ cfitsio_read_card (SEXP fits_object, SEXP key_name)
     else
 	return mkString ("");
 }
+
+/********************************************************************/
+
+/* Wrapper to fits_read_key */
+SEXP
+cfitsio_read_key (SEXP fits_object, SEXP type_name,
+		  SEXP key_name, SEXP return_value)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits->cfitsio_ptr)
+    {
+	/* Note that we size 'value' using the maximum number of
+	 * characters allowed for a *string*. Since all the other data
+	 * types allowed in a keyword require less storage, this is a
+	 * safe bet. */
+	int type;
+	char value[FLEN_VALUE + 1];
+	char comment[FLEN_COMMENT + 1];
+
+	fits_read_key (fits->cfitsio_ptr, type, NM (key_name),
+		       (void *) &value[0], &comment[0],
+		       &(fits->status));
+	value[FLEN_VALUE] = 0;
+	comment[FLEN_COMMENT] = 0;
+
+	if (! asLogical (return_value))
+	    return mkString (comment);
+
+	type = type_from_typename (NM (type_name));
+	if (type < 0)
+	{
+	    error ("Invalid value for 'data.type' in call to"
+		   "'readKeyValue' or 'readKeyComment'");
+	    return mkString ("");
+	}
+
+	return sexp_from_void_ptr ((const void *) value, type);
+    }
+    else
+	return mkString ("");
+}

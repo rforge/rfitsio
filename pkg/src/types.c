@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <R_ext/Complex.h>
 #include "rfitsio.h"
 
 /********************************************************************/
@@ -90,4 +91,42 @@ typename_from_type (int type, int * var_len_flag)
 #undef EMIT_CODE_FOR_TYPE
 
     return "UNKNOWN";
+}
+
+SEXP
+sexp_from_void_ptr (const void * data, int type)
+{
+    switch (type)
+    {
+    case TSTRING:	return mkString (data);
+    case TLOGICAL:	return ScalarLogical (*((int *) &data[0]));
+    case TBYTE:		return ScalarInteger (*((unsigned char *) &data[0]));
+    case TSHORT:	return ScalarInteger (*((signed short *) &data[0]));
+    case TUSHORT:	return ScalarInteger (*((unsigned short *) &data[0]));
+    case TINT:		return ScalarInteger (*((signed int *) &data[0]));
+    case TUINT:		return ScalarInteger (*((unsigned int *) &data[0]));
+    case TLONG:		return ScalarInteger (*((signed long *) &data[0]));
+    case TULONG:	return ScalarInteger (*((unsigned long *) &data[0]));
+    case TFLOAT:	return ScalarReal (*((float *) &data[0]));
+    case TDOUBLE:	return ScalarReal (*((double *) &data[0]));
+    case TCOMPLEX:
+    {
+	float * flt_data = (float *) &data[0];
+	Rcomplex num;
+
+	num.r = flt_data[0];
+	num.i = flt_data[1];
+	return ScalarComplex (num);
+    }
+    case TDBLCOMPLEX:	
+    {
+	double * dbl_data = (float *) &data[0];
+	Rcomplex num;
+
+	num.r = dbl_data[0];
+	num.i = dbl_data[1];
+	return ScalarComplex (num);
+    }
+    default:            return R_NilValue;
+    }
 }

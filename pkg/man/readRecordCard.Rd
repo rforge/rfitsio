@@ -21,8 +21,8 @@
 
 	These functions are seldom used: to read the value of a
 	keyword it is normally better to stick to
-	\code{\link{readKey}}, which extracts the value of the keyword
-	and converts it into a suitable data type.
+	\code{\link{readKeyValue}}, which extracts the value of the
+	keyword and converts it into a suitable data type.
 
 }
 \usage{
@@ -43,7 +43,7 @@
 
 }
 \seealso{
-	\code{\link{getNumOfKeys}}, \code{\link{moveAbsHDU}}, \code{\link{moveRelHDU}}, \code{\link{getErrorStatus}}.
+	\code{\link{readKeyValue}}, \code{\link{readKeyComment}}, \code{\link{getNumOfKeys}}, \code{\link{moveAbsHDU}}, \code{\link{moveRelHDU}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{

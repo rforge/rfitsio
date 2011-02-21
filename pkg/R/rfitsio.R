@@ -186,6 +186,27 @@ readCard <- function(fits.obj, key.name)
   return(.Call(cfitsio_read_card, fits.obj, as.character(key.name)))
 }
 
+readKeyValue <- function(fits.obj, data.type, key.name)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  return(.Call(cfitsio_read_key, fits.obj,
+               as.character(data.type),
+               as.character(key.name), TRUE));
+}
+
+readKeyComment <- function(fits.obj, key.name)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  # TSTRING has no effect in the retrieval of the comment, but it
+  # grants it can be used with every type of card.
+  return(.Call(cfitsio_read_key, fits.obj,
+               "TSTRING", as.character(key.name), FALSE));
+}
+
 ######################################################################
 # R wrappers to functions in "src/tables.c"
 
