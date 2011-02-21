@@ -167,6 +167,53 @@ create_string_HDU (fitsfile * fptr, int * status)
     fits_write_col_str (fptr, 1, 1, 1, array_size, array, status);
 }
 
+void
+create_test_header (fitsfile * fptr, int * status)
+{
+    int            logic_val        = 0;
+    unsigned char  byte_val         = 128;
+    signed short   short_val        = 1 << 14;
+    unsigned short ushort_val       = 1U << 15;
+    signed int     int_val          = short_val;
+    unsigned int   uint_val         = ushort_val;
+    signed long    long_val         = 1L << 30;
+    unsigned long  ulong_val        = 1UL << 31;
+    long long      longlong_val     = 1LL << 62;
+    float          float_val        = 1.23456789e32;
+    double         double_val       = 1.23456789e124;
+    float          complex_val[]    = { 1., 2. };
+    double         dblcomplex_val[] = { 1.e123, 2.e124 };
+    
+    fits_write_key (fptr, TSTRING, "STR", (void *) "This is a string",
+		    (void *) "Comment1", status);
+    fits_write_key (fptr, TLOGICAL, "LOGIC", (void *) &logic_val,
+		    (void *) "Comment2", status);
+    fits_write_key (fptr, TBYTE, "BYTE", (void *) &byte_val,
+		    (void *) "Comment3", status);
+    fits_write_key (fptr, TSHORT, "SHORT", (void *) &short_val,
+		    (void *) "Comment4", status);
+    fits_write_key (fptr, TUSHORT, "USHORT", (void *) &ushort_val,
+		    (void *) "Comment5", status);
+    fits_write_key (fptr, TINT, "INT", (void *) &int_val,
+		    (void *) "Comment6", status);
+    fits_write_key (fptr, TUINT, "UINT", (void *) &uint_val,
+		    (void *) "Comment7", status);
+    fits_write_key (fptr, TLONG, "LONG", (void *) &long_val,
+		    (void *) "Comment8", status);
+    fits_write_key (fptr, TULONG, "ULONG", (void *) &ulong_val,
+		    (void *) "Comment9", status);
+    fits_write_key (fptr, TLONGLONG, "LONGLONG", (void *) &longlong_val,
+		    (void *) "Comment10", status);
+    fits_write_key (fptr, TFLOAT, "FLOAT", (void *) &float_val,
+		    (void *) "Comment11", status);
+    fits_write_key (fptr, TDOUBLE, "DOUBLE", (void *) &double_val,
+		    (void *) "Comment12", status);
+    fits_write_key (fptr, TCOMPLEX, "CMPLX", (void *) &complex_val,
+		    (void *) "Comment13", status);
+    fits_write_key (fptr, TDBLCOMPLEX, "DBLCMPLX", (void *) &dblcomplex_val,
+		    (void *) "Comment14", status);
+}
+
 int
 main (void)
 {
@@ -182,6 +229,19 @@ main (void)
     create_real_HDU    (fptr, &status);
     create_complex_HDU (fptr, &status);
     create_string_HDU  (fptr, &status);
+
+    fits_close_file (fptr, &status);
+
+    if (status)
+    {
+	fits_report_error (stderr, status);
+	status = 0;
+    }
+
+    fits_create_file (&fptr, "!header.fits", &status);
+    fits_create_img (fptr, 8, 0, NULL, &status);
+
+    create_test_header (fptr, &status);
 
     fits_close_file (fptr, &status);
 
