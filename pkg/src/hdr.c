@@ -124,6 +124,14 @@ cfitsio_read_key (SEXP fits_object, SEXP type_name,
 	char value[FLEN_VALUE + 1];
 	char comment[FLEN_COMMENT + 1];
 
+	type = type_from_typename (NM (type_name));
+	if (type < 0)
+	{
+	    error ("Invalid value for 'data.type' in call to "
+		   "'readKeyValue' or 'readKeyComment'");
+	    return mkString ("");
+	}
+
 	fits_read_key (fits->cfitsio_ptr, type, NM (key_name),
 		       (void *) &value[0], &comment[0],
 		       &(fits->status));
@@ -132,14 +140,6 @@ cfitsio_read_key (SEXP fits_object, SEXP type_name,
 
 	if (! asLogical (return_value))
 	    return mkString (comment);
-
-	type = type_from_typename (NM (type_name));
-	if (type < 0)
-	{
-	    error ("Invalid value for 'data.type' in call to"
-		   "'readKeyValue' or 'readKeyComment'");
-	    return mkString ("");
-	}
 
 	return sexp_from_void_ptr ((const void *) value, type);
     }
