@@ -103,9 +103,9 @@ wrapper_func (SEXP file_name, SEXP mode_name)                      \
                                                                    \
     fits = Calloc (1, fits_file_t);                                \
     cfitsio_func (&(fits->cfitsio_ptr),                            \
-		  NM(file_name),                  /* (1) */        \
-		  mode_from_name (mode_name),                      \
-		  &(fits->status));                                \
+                  NM(file_name),                  /* (1) */        \
+                  mode_from_name (mode_name),                      \
+                  &(fits->status));                                \
     /* (1) Ignore any warning here: it is a CFITSIO bug */         \
                                                                    \
     return fits_ptr2SEXP (fits);                                   \
@@ -131,4 +131,23 @@ cfitsio_create_file (SEXP file_name)
 		      &(fits->status));
 
     return fits_ptr2SEXP (fits);
+}
+
+
+/********************************************************************/
+
+/* Wrapper to fits_close_file */
+SEXP
+cfitsio_close_file (SEXP fits_object)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    {
+	fits_close_file (fits->cfitsio_ptr,
+			 &(fits->status));
+	fits->cfitsio_ptr = NULL;
+    }
+
+    return R_NilValue;
 }
