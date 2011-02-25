@@ -104,4 +104,4 @@ if (num.of.columns.6 != 1)
 
 str.col.1 <- readColumn(fits.obj, "TSTRING", 1, 1, 1, num.of.rows.6)
 
-rm(fits.obj)
+closeFITSFile(fits.obj)

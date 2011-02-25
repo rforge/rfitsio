@@ -46,4 +46,4 @@ for (i in 1:num.of.HDUs) {
 # Go back to the second HDU so we can test moveAbsHDU as well
 moveAbsHDU(fits.obj, 2)
 
-rm(fits.obj)
+closeFITSFile(fits.obj)
