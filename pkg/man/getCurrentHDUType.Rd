@@ -45,4 +45,5 @@ for (cur.hdu in 1:getNumOfHDUs(fits.obj)) \{
     cur.hdu.type <- getCurrentHDUType(fits.obj)
     cat(sprintf("HDU \%d is of type \%s\\n", cur.hdu, cur.hdu.type))
 \}
+closeFITSFile(fits.obj)
 }

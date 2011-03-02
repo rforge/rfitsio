@@ -36,4 +36,5 @@ fits.obj <- openFITSFile(file.name)
 cat(sprintf("Number of HDUs in file \%s: \%d\\n",
             file.name,
 	    getNumOfHDUs(fits.obj)));
+closeFITSFile(fits.obj)
 }

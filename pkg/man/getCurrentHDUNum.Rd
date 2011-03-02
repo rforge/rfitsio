@@ -49,4 +49,5 @@
 file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
 fits.obj <- openFITSFile(file.name)
 getCurrentHDUNum(fits.obj)  # This should be 1
+closeFITSFile(fits.obj)
 }

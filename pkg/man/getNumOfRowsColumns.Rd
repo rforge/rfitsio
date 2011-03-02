@@ -52,4 +52,5 @@ for (cur.hdu in 1:getNumOfHDUs(fits.obj)) {
                     getNumOfRows(fits.obj),
 		    getNumOfColumns(fits.obj)))
 }
+closeFITSFile(fits.obj)
 }

@@ -35,4 +35,5 @@ file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
 fits.obj <- openFITSFile(file.name)
 getNumOfKeys(fits.obj)
 getAvailableKeySlots(fits.obj)
+closeFITSFile(fits.obj)
 }
