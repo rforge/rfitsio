@@ -17,8 +17,8 @@
 
 library (rfitsio)
 
-fits.obj <- openFITSFile(syste.file("fits_files", "tables.fits",
-                                    package = "rfitsio"))
+fits.obj <- openFITSFile(system.file("fits_files", "tables.fits",
+				     package = "rfitsio"))
 
 if (getErrorStatus(fits.obj) == 0) {
   cat(paste("File was opened successfully, error status is",
