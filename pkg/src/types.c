@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <R_ext/Complex.h>
+#include <R.h>
 #include "rfitsio.h"
 
 /********************************************************************/
@@ -100,14 +100,36 @@ sexp_from_void_ptr (const void * data, int type)
     {
     case TSTRING:   return mkString (data);
     case TLOGICAL:  return ScalarLogical (*((int *) data));
-    case TBYTE:     return ScalarInteger (*((unsigned char *) data));
-    case TSHORT:    return ScalarInteger (*((signed short *) data));
-    case TUSHORT:   return ScalarInteger (*((unsigned short *) data));
-    case TINT:      return ScalarInteger (*((signed int *) data));
-    case TUINT:     return ScalarInteger (*((unsigned int *) data));
-    case TLONG:     return ScalarInteger (*((signed long *) data));
-    case TULONG:    return ScalarInteger (*((unsigned long *) data));
-    case TLONGLONG: return ScalarInteger (*((long long *) data));
+
+    /* In the following code we must be sure not to overflow the
+     * parameter passed to ScalarInteger (which must be a "int"). This
+     * is the case for the TLONG, TULONG and TLONGLONG types: if an
+     * overflow might occur, then ScalarReal is used instead. */
+#define HANDLE_INT_CASE(type)                                   \
+        {                                                       \
+            if (sizeof(type) < sizeof(int)                      \
+                || (*((type *) data) <= (long) SINT_MAX         \
+                    && *((type *) data) >= (long) SINT_MIN))    \
+            {                                                   \
+                return ScalarInteger (*((type *) data));        \
+            }                                                   \
+            else                                                \
+            {                                                   \
+                return ScalarReal (*((type *) data));           \
+            }                                                   \
+        }
+
+    case TBYTE:     HANDLE_INT_CASE(unsigned char);
+    case TSHORT:    HANDLE_INT_CASE(signed short);
+    case TUSHORT:   HANDLE_INT_CASE(unsigned short);
+    case TINT:      HANDLE_INT_CASE(signed int);
+    case TUINT:     HANDLE_INT_CASE(unsigned int);
+    case TLONG:     HANDLE_INT_CASE(signed long);
+    case TULONG:    HANDLE_INT_CASE(unsigned long);
+    case TLONGLONG: HANDLE_INT_CASE(LONGLONG);
+
+#undef HANDLE_INT_CASE
+
     case TFLOAT:    return ScalarReal (*((float *) data));
     case TDOUBLE:   return ScalarReal (*((double *) data));
     case TCOMPLEX:

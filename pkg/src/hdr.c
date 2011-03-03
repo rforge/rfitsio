@@ -135,6 +135,9 @@ cfitsio_read_key (SEXP fits_object, SEXP type_name,
 	fits_read_key (fits->cfitsio_ptr, type, NM (key_name),
 		       (void *) &value[0], &comment[0],
 		       &(fits->status));
+	if (fits->status != 0)
+	    warning ("Error in call to fits_read_key: %d, type is %d, key is %s", fits->status, type, NM (key_name));
+
 	value[FLEN_VALUE] = 0;
 	comment[FLEN_COMMENT] = 0;
 

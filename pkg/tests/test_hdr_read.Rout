@@ -1,0 +1,143 @@
+
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-apple-darwin9.8.0/x86_64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # Test cases for header access routines
+> # Copyright (C) 2011 Maurizio Tomasi
+> #
+> # This program is free software; you can redistribute it and/or
+> # modify it under the terms of the GNU General Public License
+> # as published by the Free Software Foundation; either version 2
+> # of the License, or (at your option) any later version.
+> # 
+> # This program is distributed in the hope that it will be useful,
+> # but WITHOUT ANY WARRANTY; without even the implied warranty of
+> # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> # GNU General Public License for more details.
+> # 
+> # You should have received a copy of the GNU General Public License
+> # along with this program; if not, write to the Free Software
+> # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+> 
+> library (rfitsio)
+> 
+> fits.obj <- openFITSFile(system.file("fits_files", "header.fits",
++                                      package = "rfitsio"))
+> 
+> if (getErrorStatus(fits.obj) != 0)
++   q()
+> 
+> fields <- data.frame (names = c("LOGIC",
++                         "BYTE",
++                         "SHORT",
++                         "USHORT",
++                         "INT",
++                         "UINT",
++                         "LONG",
++                         "ULONG",
++                         "LONGLONG",
++                         "FLOAT",
++                         "DOUBLE",
++                         "CMPLX",
++                         "DBLCMPLX"),
++                       types = c("TLOGICAL",
++                         "TBYTE",
++                         "TSHORT",
++                         "TUSHORT",
++                         "TINT",
++                         "TUINT",
++                         "TLONG",
++                         "TULONG",
++                         "TLONGLONG",
++                         "TFLOAT",
++                         "TDOUBLE",
++                         "TCOMPLEX",
++                         "TDBLCOMPLEX"))
+> 
+> cards <- c()
+> values <- list()
+> comments <- c()
+> 
+> for (i in 1:length(fields$names))
++   {
++     cards <- c(cards, readCard(fits.obj, fields$names[i]))
++     values <- c(values, readKeyValue(fits.obj, fields$types[i], fields$names[i]))
++     comments <- c(comments, readKeyComment(fits.obj, fields$names[i]))
++   }
+> 
+> cards
+ [1] "LOGIC   =                    F / Comment2" 
+ [2] "BYTE    =                  128 / Comment3" 
+ [3] "SHORT   =                16384 / Comment4" 
+ [4] "USHORT  =                32768 / Comment5" 
+ [5] "INT     =                16384 / Comment6" 
+ [6] "UINT    =                32768 / Comment7" 
+ [7] "LONG    =           1073741824 / Comment8" 
+ [8] "ULONG   =           2147483648 / Comment9" 
+ [9] "LONGLONG=  4611686018427387904 / Comment10"
+[10] "FLOAT   =         1.234568E+32 / Comment11"
+[11] "DOUBLE  =      1.23456789E+124 / Comment12"
+[12] "CMPLX   =             (1., 2.) / Comment13"
+[13] "DBLCMPLX= (1.0E+123, 2.0E+124) / Comment14"
+> values
+[[1]]
+[1] FALSE
+
+[[2]]
+[1] 128
+
+[[3]]
+[1] 16384
+
+[[4]]
+[1] 32768
+
+[[5]]
+[1] 16384
+
+[[6]]
+[1] 32768
+
+[[7]]
+[1] 1073741824
+
+[[8]]
+[1] 2147483648
+
+[[9]]
+[1] 4.611686e+18
+
+[[10]]
+[1] 1.234568e+32
+
+[[11]]
+[1] 1.234568e+124
+
+[[12]]
+[1] 1+2i
+
+[[13]]
+[1] 1e+123+2e+124i
+
+> comments
+ [1] "Comment2"  "Comment3"  "Comment4"  "Comment5"  "Comment6"  "Comment7" 
+ [7] "Comment8"  "Comment9"  "Comment10" "Comment11" "Comment12" "Comment13"
+[13] "Comment14"
+> 
+> closeFITSFile(fits.obj)
+NULL
+> 

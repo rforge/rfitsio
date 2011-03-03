@@ -61,4 +61,8 @@ for (i in 1:length(fields$names))
     comments <- c(comments, readKeyComment(fits.obj, fields$names[i]))
   }
 
+cards
+values
+comments
+
 closeFITSFile(fits.obj)
