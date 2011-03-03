@@ -308,9 +308,41 @@ cfitsio_read_col (SEXP fits_object,
     case TUSHORT:   PLAIN_COPY(INTSXP,  INTEGER, unsigned short, NA_INTEGER);
     case TINT:      PLAIN_COPY(INTSXP,  INTEGER, signed int,     NA_INTEGER);
     case TUINT:     PLAIN_COPY(INTSXP,  INTEGER, unsigned int,   NA_INTEGER);
-    case TLONG:     PLAIN_COPY(INTSXP,  INTEGER, signed long,    NA_INTEGER);
-    case TULONG:    PLAIN_COPY(INTSXP,  INTEGER, unsigned long,  NA_INTEGER);
-    case TLONGLONG: PLAIN_COPY(INTSXP,  INTEGER, LONGLONG,       NA_INTEGER);
+    case TLONG:     
+    {
+	if (sizeof (long) <= sizeof(int))
+	{
+	    PLAIN_COPY(INTSXP, INTEGER, signed long, NA_INTEGER);
+	}
+	else
+	{
+	    PLAIN_COPY(REALSXP, REAL, signed long, NA_REAL);
+	}
+    }
+
+    case TULONG:
+    {
+	if (sizeof (long) <= sizeof(int))
+	{
+	    PLAIN_COPY(INTSXP, INTEGER, unsigned long, NA_INTEGER);
+	}
+	else
+	{
+	    PLAIN_COPY(REALSXP, REAL, unsigned long, NA_REAL);
+	}
+    }
+
+    case TLONGLONG: 
+    {
+	if (sizeof (LONGLONG) <= sizeof(int))
+	{
+	    PLAIN_COPY(INTSXP, INTEGER, LONGLONG, NA_INTEGER);
+	}
+	else
+	{
+	    PLAIN_COPY(REALSXP, REAL, LONGLONG, NA_REAL);
+	}
+    }
 
     case TFLOAT:    PLAIN_COPY(REALSXP, REAL,    float,          NA_REAL);
     case TDOUBLE:   PLAIN_COPY(REALSXP, REAL,    double,         NA_REAL);
