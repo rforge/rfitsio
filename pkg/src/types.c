@@ -98,17 +98,18 @@ sexp_from_void_ptr (const void * data, int type)
 {
     switch (type)
     {
-    case TSTRING:  return mkString (data);
-    case TLOGICAL: return ScalarLogical (*((int *) data));
-    case TBYTE:    return ScalarInteger (*((unsigned char *) data));
-    case TSHORT:   return ScalarInteger (*((signed short *) data));
-    case TUSHORT:  return ScalarInteger (*((unsigned short *) data));
-    case TINT:     return ScalarInteger (*((signed int *) data));
-    case TUINT:    return ScalarInteger (*((unsigned int *) data));
-    case TLONG:    return ScalarInteger (*((signed long *) data));
-    case TULONG:   return ScalarInteger (*((unsigned long *) data));
-    case TFLOAT:   return ScalarReal (*((float *) data));
-    case TDOUBLE:  return ScalarReal (*((double *) data));
+    case TSTRING:   return mkString (data);
+    case TLOGICAL:  return ScalarLogical (*((int *) data));
+    case TBYTE:     return ScalarInteger (*((unsigned char *) data));
+    case TSHORT:    return ScalarInteger (*((signed short *) data));
+    case TUSHORT:   return ScalarInteger (*((unsigned short *) data));
+    case TINT:      return ScalarInteger (*((signed int *) data));
+    case TUINT:     return ScalarInteger (*((unsigned int *) data));
+    case TLONG:     return ScalarInteger (*((signed long *) data));
+    case TULONG:    return ScalarInteger (*((unsigned long *) data));
+    case TLONGLONG: return ScalarInteger (*((long long *) data));
+    case TFLOAT:    return ScalarReal (*((float *) data));
+    case TDOUBLE:   return ScalarReal (*((double *) data));
     case TCOMPLEX:
     {
 	Rcomplex num = { ((float *) data)[0], ((float *) data)[1] };
