@@ -43,5 +43,6 @@ if (getErrorStatus(fits.obj) != 0) {
    error(sprintf("Unable to open file \%s, reason: \%s",
                  file.name,
 		 getErrorText(fits.obj)))
+closeFITSFile(fits.obj)
 }
 }

@@ -60,5 +60,4 @@ resetErrorStatus(fits.obj)
 # Now the error status is set back to zero
 cat(getErrorStatus(fits.obj))
 cat(getErrorText(fits.obj))
-rm(fits.obj)
 }

@@ -51,4 +51,5 @@ file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
 fits.obj <- openFITSFile(file.name)
 readRecord(fits.obj, 2)          # Read the second card (this is "BITPIX")
 readCard(fits.obj, "BITPIX")     # Same as above, but use the full name
+closeFITSFile(fits.obj)
 }

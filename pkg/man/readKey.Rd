@@ -57,4 +57,5 @@ fits.obj <- openFITSFile(file.name)
 # The first column of the table in HDU 2 contains logical values
 readKeyValue(fits.obj, "TINT", "NAXIS")
 readKeyComment(fits.obj, "NAXIS")
+closeFITSFile(fits.obj)
 }
