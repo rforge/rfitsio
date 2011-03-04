@@ -31,7 +31,10 @@ useDynLib(rfitsio,
           cfitsio_get_colname,
           cfitsio_get_coltype,
           cfitsio_get_eqcoltype,
-          cfitsio_read_col
+          cfitsio_read_col,
+# From "src/img.c"
+          cfitsio_get_img_type,
+          cfitsio_get_img_equivtype
 )
 
 # We explicitly list the functions to be exported because we do not
@@ -64,4 +67,6 @@ export(is.fits.obj,
        getColumnName,
        getColumnInformation,
        getEqColumnInformation,
-       readColumn)
+       readColumn,
+       getImgType,
+       getImgEquivType)

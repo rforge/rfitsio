@@ -383,3 +383,32 @@ readColumn <- function(fits.obj, data.type, column.num,
   
   return(result)
 }
+
+######################################################################
+# R wrappers to functions in "src/img.c"
+
+getImgType <- function(fits.obj)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_get_img_type, fits.obj)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
+getImgEquivType <- function(fits.obj)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_get_img_type, fits.obj)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
