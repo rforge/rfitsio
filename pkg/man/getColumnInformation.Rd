@@ -1,6 +1,5 @@
 \name{getColumnInformation}
 \alias{getColumnInformation}
-\alias{getEqColumnInformation}
 \title{
 
 	Return the number of columns in the current HDU of a FITS file
@@ -11,13 +10,11 @@
 	Return a list describing the column with the specified index
 	(starting from 1).
 
-	The two functions \code{getColumnInformation} and
-	\code{getEqColumnInformation} are identical, except for the
-	fact that \code{getEqColumnInformation} takes into account the
-	values of \code{TSCAL} and \code{TZERO} to determine the
-	\dQuote{true} column type. For instance, if a column has type
-	\code{1I} and \code{TSCALn} equal to 0.12, then the type
-	returned by \code{getColumnInformation} will be
+	Flag \code{equiv} tells RFITSIO whether to take into account
+	or not the values of \code{TSCAL} and \code{TZERO} to
+	determine the \dQuote{true} column type. For instance, if a
+	column has type \code{1I} and \code{TSCALn} equal to 0.12,
+	then the type returned by \code{getColumnInformation} will be
 	\code{"TSHORT"}, while the type returned by
 	\code{getEqColumnInformation} will be \code{"TFLOAT"}.
 
@@ -26,8 +23,7 @@
 
 }
 \usage{
-	info <- getColumnInformation(fits.obj, column.num)
-	info <- getEqColumnInformation(fits.obj, column.num)
+	info <- getColumnInformation(fits.obj, column.num, equiv = FALSE)
 }
 \arguments{
 
@@ -35,6 +31,10 @@
 	\code{\link{openFITSFile}}.}
 
 	\item{column.num}{The index of the column (starting from 1).}
+
+	\item{equiv}{Whether to take into account the values of
+	\code{TSCAL} and \code{TZERO} to determine the column type.
+	(See the description.)}
 
 }
 \value{
@@ -64,8 +64,8 @@
 
 }
 \seealso{
-	\code{\link{getColumnNumber}}, \code{\link{moveAbsHDU}}, \code{\link{moveRelHDU}}, \code{\link{getErrorStatus}}.
+	\code{\link{getColumnNumber}}, \code{\link{moveAbsHDU}},
+	\code{\link{moveRelHDU}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
-\examples{
-}
+
