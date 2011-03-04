@@ -342,25 +342,13 @@ getColumnName <- function(fits.obj, template, casesen = FALSE)
   return(result)
 }
 
-getColumnInformation <- function(fits.obj, column.num)
+getColumnInformation <- function(fits.obj, column.num, equiv = FALSE)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  result <- .Call(cfitsio_get_coltype, fits.obj, as.integer (column.num))
-
-  if (getErrorStatus(fits.obj) != 0)
-    warning(getErrorText(fits.obj))
-  
-  return(result)
-}    
-
-getEqColumnInformation <- function(fits.obj, column.num)
-{
-  if (! is.fits.obj(fits.obj))
-    stop(.message.wrong.fits.obj.type)
-
-  result <- .Call(cfitsio_get_eqcoltype, fits.obj, as.integer (column.num))
+  f <- if(equiv) cfitsio_get_eqcoltype else cfitsio_get_coltype
+  result <- .Call(f, fits.obj, as.integer (column.num))
 
   if (getErrorStatus(fits.obj) != 0)
     warning(getErrorText(fits.obj))
@@ -387,25 +375,13 @@ readColumn <- function(fits.obj, data.type, column.num,
 ######################################################################
 # R wrappers to functions in "src/img.c"
 
-getImgType <- function(fits.obj)
+getImgType <- function(fits.obj, equiv = FALSE)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  result <- .Call(cfitsio_get_img_type, fits.obj)
-
-  if (getErrorStatus(fits.obj) != 0)
-    warning(getErrorText(fits.obj))
-  
-  return(result)
-}
-
-getImgEquivType <- function(fits.obj)
-{
-  if (! is.fits.obj(fits.obj))
-    stop(.message.wrong.fits.obj.type)
-
-  result <- .Call(cfitsio_get_img_type, fits.obj)
+  f <- if(equiv) cfitsio_get_img_eqivtype else cfitsio_get_img_type
+  result <- .Call(f, fits.obj)
 
   if (getErrorStatus(fits.obj) != 0)
     warning(getErrorText(fits.obj))
