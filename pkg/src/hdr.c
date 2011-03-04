@@ -32,7 +32,7 @@ cfitsio_get_num_of_keys (SEXP fits_object)
 {
     fits_file_t * fits = R_ExternalPtrAddr (fits_object);
 
-    if (NULL != fits->cfitsio_ptr)
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
     {
 	int num_of_keys;
 
@@ -50,7 +50,7 @@ cfitsio_get_available_key_slots (SEXP fits_object)
 {
     fits_file_t * fits = R_ExternalPtrAddr (fits_object);
 
-    if (NULL != fits->cfitsio_ptr)
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
     {
 	int num_of_keys;
 	int available_slots;
@@ -71,7 +71,7 @@ cfitsio_read_record (SEXP fits_object, SEXP key_number)
 {
     fits_file_t * fits = R_ExternalPtrAddr (fits_object);
 
-    if (NULL != fits->cfitsio_ptr)
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
     {
 	char record[FLEN_CARD + 1];
 
@@ -92,7 +92,7 @@ cfitsio_read_card (SEXP fits_object, SEXP key_name)
 {
     fits_file_t * fits = R_ExternalPtrAddr (fits_object);
 
-    if (NULL != fits->cfitsio_ptr)
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
     {
 	char record[FLEN_CARD + 1];
 
@@ -114,7 +114,7 @@ cfitsio_read_key (SEXP fits_object, SEXP type_name,
 {
     fits_file_t * fits = R_ExternalPtrAddr (fits_object);
 
-    if (NULL != fits->cfitsio_ptr)
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
     {
 	/* Note that we size 'value' using the maximum number of
 	 * characters allowed for a *string*. Since all the other data
