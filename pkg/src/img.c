@@ -37,10 +37,19 @@ get_img_type_generic (int (*fn) (fitsfile *, int *, int *),
     {
 	int bits_per_pixel;
 	fn (fits->cfitsio_ptr, &bits_per_pixel, &(fits->status));
-	return ScalarInteger (bits_per_pixel);
+
+	switch (bits_per_pixel)
+	{
+	case 8: return mkString ("BYTE_IMG");
+	case 16: return mkString ("SHORT_IMG");
+	case 32: return mkString ("LONG_IMG");
+	case 64: return mkString ("LONGLONG_IMG");
+	case -32: return mkString ("FLOAT_IMG");
+	case -64: return mkString ("DOUBLE_IMG");
+	default: return mkString ("UNKNOWN");
     }
     else
-	return ScalarInteger (-1);
+	return mkString ("");
 }
 
 SEXP
