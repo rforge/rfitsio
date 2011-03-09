@@ -380,7 +380,7 @@ getImgType <- function(fits.obj, equiv = FALSE)
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
-  f <- if(equiv) cfitsio_get_img_eqivtype else cfitsio_get_img_type
+  f <- if(equiv) cfitsio_get_img_equivtype else cfitsio_get_img_type
   result <- .Call(f, fits.obj)
 
   if (getErrorStatus(fits.obj) != 0)
