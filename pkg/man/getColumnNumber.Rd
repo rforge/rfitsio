@@ -54,5 +54,3 @@
 	\code{\link{getColumnInformation}}, \code{\link{moveAbsHDU}}, \code{\link{moveRelHDU}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
-\examples{
-}
