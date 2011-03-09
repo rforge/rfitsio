@@ -66,3 +66,66 @@ cfitsio_get_img_equivtype (SEXP fits_object)
 }
 
 /********************************************************************/
+
+/* Wrapper to fits_get_img_dim */
+SEXP
+cfitsio_get_img_dim (SEXP fits_object)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    {
+	int naxis;
+	fits_get_img_dim (fits->cfitsio_ptr,
+			  &naxis,
+			  &(fits->status));
+	return ScalarInteger (naxis);
+    }
+    else
+	return ScalarInteger (-1);
+}
+
+/********************************************************************/
+
+/* Wrapper to fits_get_img_size */
+SEXP
+cfitsio_get_img_size (SEXP fits_object)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    {
+	int naxis;
+	int i;
+	long * axes_dimensions;
+	SEXP result;
+
+	/* First retrieve the number of dimensions */
+	fits_get_img_dim (fits->cfitsio_ptr,
+			  &naxis,
+			  &(fits->status));
+
+	if (fits->status != 0)
+	    return ScalarInteger (-1);
+
+	axes_dimensions = (long *) malloc (sizeof (long) * naxis);
+
+	/* Now get the size for each dimension */
+	fits_get_img_size (fits->cfitsio_ptr,
+			   naxis,
+			   &axes_dimensions[0],
+			   &(fits->status));
+
+	/* Build a R array and initialize it with the numbers returned
+	 * by fits_get_img_size */
+	PROTECT(result = allocVector (INTSXP, naxis));
+	for (i = 0; i < naxis; ++i)
+	   INTEGER(result)[i] = axes_dimensions[i];
+	UNPROTECT(1);
+
+	free (axes_dimensions);
+	return result;
+    }
+    else
+	return R_NilValue;
+}

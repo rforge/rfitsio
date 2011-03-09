@@ -388,3 +388,29 @@ getImgType <- function(fits.obj, equiv = FALSE)
   
   return(result)
 }
+
+getImgDim <- function(fits.obj)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_get_img_dim, fits.obj)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
+getImgSize <- function(fits.obj)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_get_img_size, fits.obj)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
