@@ -97,8 +97,9 @@ cfitsio_get_img_size (SEXP fits_object)
     {
 	int naxis;
 	int i;
-	long * axes_dimensions;
+	LONGLONG * axes_dimensions;
 	SEXP result;
+	int verybig_flag;
 
 	/* First retrieve the number of dimensions */
 	fits_get_img_dim (fits->cfitsio_ptr,
@@ -111,16 +112,36 @@ cfitsio_get_img_size (SEXP fits_object)
 	axes_dimensions = (long *) malloc (sizeof (long) * naxis);
 
 	/* Now get the size for each dimension */
-	fits_get_img_size (fits->cfitsio_ptr,
-			   naxis,
-			   &axes_dimensions[0],
-			   &(fits->status));
+	fits_get_img_sizell (fits->cfitsio_ptr,
+			     naxis,
+			     &axes_dimensions[0],
+			     &(fits->status));
+
+	/* Check that the sizes are small enough to be contained in a
+	 * integer or not */
+	verybig_flag = 0;
+	if (sizeof (LONGLONG) > sizeof (int))
+	{
+	    for (i = 0; i < naxis; ++i)
+	    {
+		if (axes_dimensions[i] > (long) SINT_MAX)
+		    verybig_flag = 1;
+	    }
+	}
 
 	/* Build a R array and initialize it with the numbers returned
 	 * by fits_get_img_size */
-	PROTECT(result = allocVector (INTSXP, naxis));
-	for (i = 0; i < naxis; ++i)
-	   INTEGER(result)[i] = axes_dimensions[i];
+	if (verybig_flag)
+	{
+	    PROTECT(result = allocVector (INTSXP, naxis));
+	    for (i = 0; i < naxis; ++i)
+		INTEGER(result)[i] = axes_dimensions[i];
+	} else
+	{
+	    PROTECT(result = allocVector (REALSXP, naxis));
+	    for (i = 0; i < naxis; ++i)
+		REAL(result)[i] = axes_dimensions[i];
+	}
 	UNPROTECT(1);
 
 	free (axes_dimensions);
