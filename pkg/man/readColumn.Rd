@@ -63,5 +63,5 @@ fits.obj <- openFITSFile(file.name)
 # The first column of the table in HDU 2 contains logical values
 moveAbsHDU(fits.obj, 2)
 readColumn(fits.obj, "TLOGICAL", 1, 1, 1, getNumOfRows(fits.obj))
-closeFITS(fits.obj)
+closeFITSFile(fits.obj)
 }
