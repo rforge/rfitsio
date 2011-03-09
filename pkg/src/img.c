@@ -40,13 +40,14 @@ get_img_type_generic (int (*fn) (fitsfile *, int *, int *),
 
 	switch (bits_per_pixel)
 	{
-	case 8: return mkString ("BYTE_IMG");
-	case 16: return mkString ("SHORT_IMG");
-	case 32: return mkString ("LONG_IMG");
-	case 64: return mkString ("LONGLONG_IMG");
-	case -32: return mkString ("FLOAT_IMG");
-	case -64: return mkString ("DOUBLE_IMG");
-	default: return mkString ("UNKNOWN");
+        case 8   : return mkString ("BYTE_IMG");
+        case 16  : return mkString ("SHORT_IMG");
+        case 32  : return mkString ("LONG_IMG");
+        case 64  : return mkString ("LONGLONG_IMG");
+        case -32 : return mkString ("FLOAT_IMG");
+        case -64 : return mkString ("DOUBLE_IMG");
+        default  : return mkString ("UNKNOWN");
+	}
     }
     else
 	return mkString ("");
