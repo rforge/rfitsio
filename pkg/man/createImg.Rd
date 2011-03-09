@@ -1,5 +1,5 @@
-\name{createImg}
-\alias{createImg}
+\name{createImage}
+\alias{createImage}
 \title{
 
 	Create a new primary array or IMAGE extension in a FITS file.
@@ -15,7 +15,7 @@
 }
 \usage{
 
-	createImg(fits.obj, bits.per.pixel, dimensions)
+	createImage(fits.obj, bits.per.pixel, dimensions)
 
 }
 \arguments{
@@ -23,9 +23,12 @@
 	\item{fits.obj}{A FITS object, returned e.g. by
 	\code{\link{createFITSFile}}.}
 
-	\item{bits.per.pixel}{Number of bits per pixel (integer value). The most common values are: 8, 16, 24 and 32.}
+	\item{bits.per.pixel}{Number of bits per pixel (integer
+	value). The most common values are: 8, 16, 24 and 32.}
 
-	\item{dimensions}{Array of \var{n} entries specifying the number of pixels along each dimension for the \var{n}-dimensional image.}
+	\item{dimensions}{Array of \var{n} entries specifying the
+	number of pixels along each dimension for the
+	\var{n}-dimensional image.}
 
 }
 \seealso{

@@ -1,5 +1,5 @@
-\name{getImgType}
-\alias{getImgType}
+\name{getImageType}
+\alias{getImageType}
 \title{
 
 	Return a string representing the (equivalent) data type of the
@@ -21,7 +21,7 @@
 
 }
 \usage{
-	info <- getImgType(fits.obj, equiv = FALSE)
+	info <- getImageType(fits.obj, equiv = FALSE)
 }
 \arguments{
 
@@ -46,12 +46,12 @@
 
 }
 \seealso{
-	\code{\link{getErrorStatus}}.
+	\code{\link{getImageDim}}, \code{\link{getImageSize}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
-file.name <- system.file("fits_files", "tables.fits", package = "rfitsio")
+file.name <- system.file("fits_files", "photo.fits", package = "rfitsio")
 fits.obj <- openFITSFile(file.name)
-getImgType(fits.obj)
+getImageType(fits.obj)
 closeFITSFile(fits.obj)
 }

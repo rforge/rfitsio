@@ -70,7 +70,7 @@ export(is.fits.obj,
        getColumnName,
        getColumnInformation,
        readColumn,
-       getImgType,
-       getImgDim,
-       getImgSize,
-       createImg)
+       getImageType,
+       getImageDim,
+       getImageSize,
+       createImage)

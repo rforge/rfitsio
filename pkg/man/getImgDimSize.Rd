@@ -1,6 +1,6 @@
-\name{getImgDimSize}
-\alias{getImgDim}
-\alias{getImgSize}
+\name{getImageDimSize}
+\alias{getImageDim}
+\alias{getImageSize}
 \title{
 
 	Return information about the size of a FITS image.
@@ -19,8 +19,8 @@
 
 }
 \usage{
-	naxis <- getImgDim(fits.obj)
-	sizes <- getImgSize(fits.obj)
+	naxis <- getImageDim(fits.obj)
+	sizes <- getImageSize(fits.obj)
 }
 \arguments{
 
@@ -30,15 +30,22 @@
 }
 \value{
 
-	\code{getImgDim} returns the number of dimensions for the
-	image (e.g. 2 if the image is 2-D), \code{getImgSize} returns
+	\code{getImageDim} returns the number of dimensions for the
+	image (e.g. 2 if the image is 2-D), \code{getImageSize} returns
 	an array of integers each specifying the size of the
 	corresponding dimension. For instance, in the case of a 2-D
 	image with size 640x480 the value returned by
-	\code{getImgSize} is \code{c(640,480)}.
+	\code{getImageSize} is \code{c(640,480)}.
 
 }
 \seealso{
-	\code{\link{getCurrentHDUType}}, \code{\link{getImgType}}.
+	\code{\link{getCurrentHDUType}}, \code{\link{getImageType}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
+\examples{
+fits.obj <- openFITSFile(system.file("fits_files", "photo.fits",
+                                     package = "rfitsio")
+dims <- getImageDim(fits.obj)  # dims = 2
+size <- getImageSize(fits.obj) # size = c(223, 229)
+closeFITSFile(fits.obj)
+}

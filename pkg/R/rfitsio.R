@@ -375,7 +375,7 @@ readColumn <- function(fits.obj, data.type, column.num,
 ######################################################################
 # R wrappers to functions in "src/img.c"
 
-getImgType <- function(fits.obj, equiv = FALSE)
+getImageType <- function(fits.obj, equiv = FALSE)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
@@ -389,7 +389,7 @@ getImgType <- function(fits.obj, equiv = FALSE)
   return(result)
 }
 
-getImgDim <- function(fits.obj)
+getImageDim <- function(fits.obj)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
@@ -402,7 +402,7 @@ getImgDim <- function(fits.obj)
   return(result)
 }
 
-getImgSize <- function(fits.obj)
+getImageSize <- function(fits.obj)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
@@ -415,7 +415,7 @@ getImgSize <- function(fits.obj)
   return(result)
 }
 
-createImg <- function(fits.obj, bits.per.pixel, dimensions)
+createImage <- function(fits.obj, bits.per.pixel, dimensions)
 {
   if (! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
