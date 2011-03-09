@@ -36,7 +36,8 @@ useDynLib(rfitsio,
           cfitsio_get_img_type,
           cfitsio_get_img_equivtype,
           cfitsio_get_img_dim,
-          cfitsio_get_img_size
+          cfitsio_get_img_size,
+          cfitsio_create_img
 )
 
 # We explicitly list the functions to be exported because we do not
@@ -71,4 +72,5 @@ export(is.fits.obj,
        readColumn,
        getImgType,
        getImgDim,
-       getImgSize)
+       getImgSize,
+       createImg)

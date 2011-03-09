@@ -414,3 +414,18 @@ getImgSize <- function(fits.obj)
   
   return(result)
 }
+
+createImg <- function(fits.obj, bits.per.pixel, dimensions)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_create_img,
+                  as.integer(bits.per.pixel),
+                  as.double(dimensions))
+
+  if(getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+
+  return(result)
+}

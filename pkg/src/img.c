@@ -150,3 +150,37 @@ cfitsio_get_img_size (SEXP fits_object)
     else
 	return R_NilValue;
 }
+
+/********************************************************************/
+
+/* Wrapper to fits_create_img and fits_create_imgll */
+SEXP
+cfitsio_create_img (SEXP fits_object,
+		    SEXP bits_per_pixel,
+		    SEXP naxes)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    {
+	int i;
+	int num_of_dimensions;
+	LONGLONG * axes_dimensions;
+
+	num_of_dimensions = length (naxes);
+	axes_dimensions = (LONGLONG *) malloc (sizeof (LONGLONG)
+					       * num_of_dimensions);
+	for (i = 0; i < num_of_dimensions; ++i)
+	    axes_dimensions = (LONGLONG) REAL(naxes)[i];
+
+	fits_create_imgll (fits->cfitsio_ptr,
+			   INTEGER (bits_per_pixel),
+			   num_of_dimensions,
+			   axes_dimensions,
+			   &(fits->status));
+
+	free (axes_dimensions);
+    }
+
+    return R_NilValue;
+}
