@@ -44,7 +44,7 @@
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- openFITSFile(system.file("fits_files", "photo.fits",
-                                     package = "rfitsio")
+                                     package = "rfitsio"))
 dims <- getImageDim(fits.obj)  # dims = 2
 size <- getImageSize(fits.obj) # size = c(223, 229)
 closeFITSFile(fits.obj)
