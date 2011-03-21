@@ -392,3 +392,91 @@ cfitsio_read_col (SEXP fits_object,
 	return R_NilValue;
     }
 }
+
+/********************************************************************/
+
+/* Wrapper to fits_create_tbl */
+SEXP
+cfitsio_create_tbl (SEXP fits_object,
+		    SEXP naxis2,
+		    SEXP ttype,
+		    SEXP tform,
+		    SEXP tunit,
+		    SEXP extname,
+		    int ascii_flag)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+    int i;
+    char ** ttype_array;
+    char ** tform_array;
+    char ** tunit_array;
+
+    if (NULL == fits || NULL == fits->cfitsio_ptr)
+	return R_NilValue;
+
+    ttype_array = (char **) malloc (sizeof (char *) * length (ttype));
+    tform_array = (char **) malloc (sizeof (char *) * length (ttype));
+    if (tunit != R_NilValue)
+	tunit_array = (char **) malloc (sizeof (char *) * length (ttype));
+    else
+	tunit_array = NULL;
+
+    for (i = 0; i < length(ttype); ++i)
+    {
+	ttype_array[i] = CHAR(STRING_ELT(ttype,i));
+	tform_array[i] = CHAR(STRING_ELT(tform,i));
+	if (tunit_array != NULL)
+	    tunit_array[i] = CHAR(STRING_ELT(tunit,i));
+    }
+
+    fits_create_tbl (fits->cfitsio_ptr,
+		     ascii_flag ? ASCII_TBL : BINARY_TBL,
+		     (LONGLONG) (REAL(naxis2)[0]),
+		     length(ttype),
+		     ttype_array,
+		     tform_array,
+		     tunit_array,
+		     NM(extname),
+		     &(fits->status));
+
+    free (ttype_array);
+    free (tform_array);
+    free (tunit_array);
+
+    return R_NilValue;
+}
+
+SEXP
+cfitsio_create_ascii_tbl (SEXP fits_object,
+			  SEXP naxis2,
+			  SEXP ttype,
+			  SEXP tform,
+			  SEXP tunit,
+			  SEXP extname)
+{
+    return cfitsio_create_tbl (fits_object,
+			       naxis2,
+			       ttype,
+			       tform,
+			       tunit,
+			       extname,
+			       1);
+}
+
+SEXP
+cfitsio_create_binary_tbl (SEXP fits_object,
+			   SEXP naxis2,
+			   SEXP ttype,
+			   SEXP tform,
+			   SEXP tunit,
+			   SEXP extname)
+{
+    return cfitsio_create_tbl (fits_object,
+			       naxis2,
+			       ttype,
+			       tform,
+			       tunit,
+			       extname,
+			       0);
+}
+		    

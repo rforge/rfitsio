@@ -372,6 +372,35 @@ readColumn <- function(fits.obj, data.type, column.num,
   return(result)
 }
 
+createTable <- function(fits.obj, column.types, column.form,
+                        column.units = NA, extname = NA, num.of.rows = 0,
+                        binary = TRUE)
+{
+  if(! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  if(length(column.types) != length(column.form)
+     || (! is.na(column.units) && (length(column.types) != length(column.units))))
+     stop(paste("Mismatch in the number of elements",
+                "among column.units, column.types",
+                "(and column.units, if provided)"))
+     
+  fn <- if(binary) cfitsio_create_binary_tbl else cfitsio_create_ascii_tbl
+  result <- .Call(fn,
+                  fits.obj,
+                  as.real(num.of.rows),
+                  as.character(column.types),
+                  as.character(column.form),
+                  as.character(column.units),
+                  as.character(extname));
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+  
+}
+    
 ######################################################################
 # R wrappers to functions in "src/img.c"
 
