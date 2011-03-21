@@ -400,7 +400,45 @@ createTable <- function(fits.obj, column.types, column.form,
   return(result)
   
 }
-    
+
+insertRows <- function(fits.obj, first.row, num)
+{
+  if(! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  # We use as.number instead of as.integer because of
+  # values possibly greater than R's "integer" sizes
+  result <- .Call(cfitsio_insert_rows,
+                  fits.obj,
+                  as.double(first.row),
+                  as.double(num))
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
+deleteRows <- function(fits.obj, rows)
+{
+  if(! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  if(is.character(rows))
+    result <- .Call(cfitsio_delete_rowrange,
+                    fits.obj,
+                    as.character(rows))
+  else
+    result <- .Call(cfitsio_delete_rowlist,
+                    fits.obj,
+                    sort(as.double(rows)))  # Note the `sort'!
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
 ######################################################################
 # R wrappers to functions in "src/img.c"
 

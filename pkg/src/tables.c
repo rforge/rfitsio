@@ -480,3 +480,67 @@ cfitsio_create_binary_tbl (SEXP fits_object,
 			       0);
 }
 		    
+/********************************************************************/
+
+/* Wrapper to fits_insert_rows */
+SEXP
+cfitsio_insert_rows (SEXP fits_object,
+		     SEXP first_row,
+		     SEXP num)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL == fits || NULL == fits->cfitsio_ptr)
+	return R_NilValue;
+
+    fits_insert_rows (fits->cfitsio_ptr,
+		      (LONGLONG) (REAL(first_row)[0]),
+		      (LONGLONG) (REAL(num)[0]),
+		      &(fits->status));
+
+    return R_NilValue;
+}
+
+/********************************************************************/
+
+SEXP
+cfitsio_delete_rowrange (SEXP fits_object,
+			 SEXP range_list)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL == fits || NULL == fits->cfitsio_ptr)
+	return R_NilValue;
+
+    fits_delete_rowrange (fits->cfitsio_ptr,
+			  NM(range_list),
+			  &(fits->status));
+
+    return R_NilValue;
+}
+
+/********************************************************************/
+
+SEXP
+cfitsio_delete_rowlist (SEXP fits_object,
+			SEXP row_list_sexp)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+    long * row_list;
+    long i;
+
+    if (NULL == fits || NULL == fits->cfitsio_ptr)
+	return R_NilValue;
+
+    row_list = malloc (length (row_list_sexp) * sizeof (long));
+    for (i = 0; i < length (row_list_sexp); ++i)
+	row_list[i] = REAL(row_list_sexp)[i];
+
+    fits_delete_rowlist (fits->cfitsio_ptr,
+			 row_list,
+			 length (row_list_sexp),
+			 &(fits->status));
+
+    free (row_list);
+    return R_NilValue;
+}
