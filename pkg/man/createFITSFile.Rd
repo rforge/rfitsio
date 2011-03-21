@@ -26,6 +26,6 @@
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
-fits.obj <- createFITSFile("!/tmp/foo.fits")  # ! prevents errors if file exists
+fits.obj <- createFITSFile(tempfile("rfitsio"))
 rm(fits.obj)
 }

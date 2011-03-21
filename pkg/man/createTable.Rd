@@ -42,7 +42,7 @@
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
-fits.obj <- createFITSFile("!this-is-a-test.fits")
+fits.obj <- createFITSFile(tempfile("rfitsio"))
 createTable(fits.obj, c("1I", "1D"), c("COUNTS", "AVERAGE"), c("Pure number", "Meters"))
 closeFITSFile(fits.obj)
 }
