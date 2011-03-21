@@ -32,6 +32,6 @@
 
 }
 \seealso{
-	\code{\link{getImgDim}}, \code{\link{getImgSize}}.
+	\code{\link{getImageDim}}, \code{\link{getImageSize}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
