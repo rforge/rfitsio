@@ -416,7 +416,7 @@ cfitsio_create_tbl (SEXP fits_object,
 
     ttype_array = (char **) malloc (sizeof (char *) * length (ttype));
     tform_array = (char **) malloc (sizeof (char *) * length (ttype));
-    if (tunit != R_NilValue)
+    if (length(tunit) > 0)
 	tunit_array = (char **) malloc (sizeof (char *) * length (ttype));
     else
 	tunit_array = NULL;
@@ -426,7 +426,7 @@ cfitsio_create_tbl (SEXP fits_object,
 	ttype_array[i] = CHAR(STRING_ELT(ttype,i));
 	tform_array[i] = CHAR(STRING_ELT(tform,i));
 	if (tunit_array != NULL)
-	    tunit_array[i] = CHAR(STRING_ELT(tunit,i));
+	  tunit_array[i] = CHAR(STRING_ELT(tunit,i));
     }
 
     fits_create_tbl (fits->cfitsio_ptr,

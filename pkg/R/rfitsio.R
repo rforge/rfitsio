@@ -373,14 +373,15 @@ readColumn <- function(fits.obj, data.type, column.num,
 }
 
 createTable <- function(fits.obj, column.types, column.form,
-                        column.units = NA, extname = NA, num.of.rows = 0,
+                        column.units = c(), extname = "", num.of.rows = 0,
                         binary = TRUE)
 {
   if(! is.fits.obj(fits.obj))
     stop(.message.wrong.fits.obj.type)
 
   if(length(column.types) != length(column.form)
-     || (! is.na(column.units) && (length(column.types) != length(column.units))))
+     || (length(column.units) > 0
+         && (length(column.types) != length(column.units))))
      stop(paste("Mismatch in the number of elements",
                 "among column.units, column.types",
                 "(and column.units, if provided)"))
@@ -392,7 +393,7 @@ createTable <- function(fits.obj, column.types, column.form,
                   as.character(column.types),
                   as.character(column.form),
                   as.character(column.units),
-                  as.character(extname));
+                  as.character(extname))
 
   if (getErrorStatus(fits.obj) != 0)
     warning(getErrorText(fits.obj))
