@@ -156,15 +156,9 @@ cfitsio_movnam_hdu (SEXP fits_object,
     {
 	fits_movnam_hdu (fits->cfitsio_ptr,
 			 asInteger (hdu_type),
-			 NM(ext_name),                   /* (1) */
+			 (char *) NM(ext_name),
 			 hdu_type_from_name (ext_ver),
 			 &(fits->status));
-	/* (1) Any decent compiler will produce a warning here,
-	 * because we are passing a "const char *" as argument to
-	 * fits_movnam_hdu, which accepts "char *". This is a
-	 * widespread bug in CFITSIO, which never uses "const char"
-	 * when required. You can safely ignore this warning (and send
-	 * a email to the CFITSIO developers). */
 
 	return R_NilValue;
     }

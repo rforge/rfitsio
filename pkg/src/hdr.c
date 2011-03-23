@@ -96,7 +96,7 @@ cfitsio_read_card (SEXP fits_object, SEXP key_name)
     {
 	char record[FLEN_CARD + 1];
 
-	fits_read_card (fits->cfitsio_ptr, NM (key_name),
+	fits_read_card (fits->cfitsio_ptr, (char *) NM (key_name),
 			&record[0], &(fits->status));
 	record[FLEN_CARD] = 0;
 	return mkString (record);
@@ -132,7 +132,8 @@ cfitsio_read_key (SEXP fits_object, SEXP type_name,
 	    return mkString ("");
 	}
 
-	fits_read_key (fits->cfitsio_ptr, type, NM (key_name),
+	fits_read_key (fits->cfitsio_ptr, type,
+		       (char *) NM (key_name),
 		       (void *) &value[0], &comment[0],
 		       &(fits->status));
 	if (fits->status != 0)

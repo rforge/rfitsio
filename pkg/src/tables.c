@@ -68,7 +68,7 @@ cfitsio_get_colnum (SEXP fits_object,
 
 	fits_get_colnum (fits->cfitsio_ptr,
 			 case_flag,
-			 NM(template),
+			 (char *) NM(template),
 			 &column_number,
 			 &(fits->status));
 
@@ -98,7 +98,7 @@ cfitsio_get_colname (SEXP fits_object,
 
 	fits_get_colname (fits->cfitsio_ptr,
 			  case_flag,
-			  NM(template),
+			  (char *) NM(template),
 			  column_name,
 			  &column_index,
 			  &(fits->status));
@@ -423,10 +423,10 @@ cfitsio_create_tbl (SEXP fits_object,
 
     for (i = 0; i < length(ttype); ++i)
     {
-	ttype_array[i] = CHAR(STRING_ELT(ttype,i));
-	tform_array[i] = CHAR(STRING_ELT(tform,i));
+	ttype_array[i] = (char *) CHAR(STRING_ELT(ttype,i));
+	tform_array[i] = (char *) CHAR(STRING_ELT(tform,i));
 	if (tunit_array != NULL)
-	  tunit_array[i] = CHAR(STRING_ELT(tunit,i));
+	    tunit_array[i] = (char *) CHAR(STRING_ELT(tunit,i));
     }
 
     fits_create_tbl (fits->cfitsio_ptr,
@@ -436,7 +436,7 @@ cfitsio_create_tbl (SEXP fits_object,
 		     ttype_array,
 		     tform_array,
 		     tunit_array,
-		     NM(extname),
+		     (char *) NM(extname),
 		     &(fits->status));
 
     free (ttype_array);
@@ -513,7 +513,7 @@ cfitsio_delete_rowrange (SEXP fits_object,
 	return R_NilValue;
 
     fits_delete_rowrange (fits->cfitsio_ptr,
-			  NM(range_list),
+			  (char *) NM(range_list),
 			  &(fits->status));
 
     return R_NilValue;
