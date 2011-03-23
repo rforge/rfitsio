@@ -1,6 +1,7 @@
 \name{moveHDU}
 \alias{moveAbsHDU}
 \alias{moveRelHDU}
+\alias{moveNamedHDU}
 \title{
 
 	Change the current HDU for a FITS object.
@@ -20,6 +21,7 @@
 \usage{
 	moveAbsHDU(fits.obj, hdu.num)
 	moveRelHDU(fits.obj, hdu.rel.num)
+	moveNamedHDU(fits.obj, hdu.type, ext.name, ext.ver = 0)
 }
 \arguments{
 
@@ -32,6 +34,19 @@
 
 	\item{hdu.rel.num}{Relative index of the new HDU with respect to
 	the current HDU index. Specifying 0 does nothing.}
+
+	\item{hdu.type}{String identifying the HDU type. Valid values
+	are \code{"ASCII_TBL"}, \code{"BINARY_TBL"} and
+	\code{"IMAGE_HDU"}.}
+
+	\item{ext.name}{String identifying the name of the extension
+	(see parameter \code{ext.name} in the documentation of
+	\code{\link{createTable}}). This is compared with the value of
+	the \code{EXTNAME}/\code{HDUNAME} keyword in each HDU to find
+	the match.}
+
+	\item{ext.ver}{Value of the \code{EXTVER}/\code{HDUVER}
+	keyword for the match. If zero (the default), it is ignored.}
 
 }
 \seealso{
