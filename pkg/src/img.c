@@ -109,7 +109,8 @@ cfitsio_get_img_size (SEXP fits_object)
 	if (fits->status != 0)
 	    return ScalarInteger (-1);
 
-	axes_dimensions = (long *) malloc (sizeof (long) * naxis);
+	axes_dimensions = (LONGLONG *) R_alloc (sizeof (LONGLONG),
+						naxis);
 
 	/* Now get the size for each dimension */
 	fits_get_img_sizell (fits->cfitsio_ptr,
@@ -144,7 +145,6 @@ cfitsio_get_img_size (SEXP fits_object)
 	}
 	UNPROTECT(1);
 
-	free (axes_dimensions);
 	return result;
     }
     else
@@ -168,18 +168,16 @@ cfitsio_create_img (SEXP fits_object,
 	LONGLONG * axes_dimensions;
 
 	num_of_dimensions = length (naxes);
-	axes_dimensions = (LONGLONG *) malloc (sizeof (LONGLONG)
-					       * num_of_dimensions);
+	axes_dimensions = (LONGLONG *) R_alloc (sizeof (LONGLONG),
+						num_of_dimensions);
 	for (i = 0; i < num_of_dimensions; ++i)
-	    axes_dimensions = (LONGLONG) REAL(naxes)[i];
+	    axes_dimensions[i] = (LONGLONG) (REAL(naxes)[i]);
 
 	fits_create_imgll (fits->cfitsio_ptr,
-			   INTEGER (bits_per_pixel),
+			   INTEGER(bits_per_pixel)[0],
 			   num_of_dimensions,
 			   axes_dimensions,
 			   &(fits->status));
-
-	free (axes_dimensions);
     }
 
     return R_NilValue;
