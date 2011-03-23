@@ -14,7 +14,7 @@
 \usage{
 
 	createTable(fits.obj, column.types, column.form,
-                    column.units = c(), extname = "", num.of.rows = 0,
+                    column.units = c(), ext.name = "", num.of.rows = 0,
                     binary = TRUE)
 
 }

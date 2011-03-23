@@ -373,7 +373,7 @@ readColumn <- function(fits.obj, data.type, column.num,
 }
 
 createTable <- function(fits.obj, column.types, column.form,
-                        column.units = c(), extname = "", num.of.rows = 0,
+                        column.units = c(), ext.name = "", num.of.rows = 0,
                         binary = TRUE)
 {
   if(! is.fits.obj(fits.obj))
@@ -393,7 +393,7 @@ createTable <- function(fits.obj, column.types, column.form,
                   as.character(column.types),
                   as.character(column.form),
                   as.character(column.units),
-                  as.character(extname))
+                  as.character(ext.name))
 
   if (getErrorStatus(fits.obj) != 0)
     warning(getErrorText(fits.obj))
