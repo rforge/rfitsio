@@ -2,9 +2,15 @@
 \alias{createFITSFile}
 \title{Create a FITS file}
 \description{Create an empty FITS file.}
-\usage{fits.obj <- createFITSFile(file.name)}
+\usage{
+	fits.obj <- createFITSFile(file.name, extended.syntax = TRUE)
+}
 \arguments{
 	\item{file.name}{A string containing the name of the file to create.}
+	\item{extended.syntax}{If \code{TRUE} (the default) then
+	control characters in \code{file.name} are interpreted by the
+	CFITSIO routines. For more information refer to the CFITSIO
+	User's Guide.}
 }
 \value{
 	A FITS file object of class \code{cfitsio_obj} (an opaque type).

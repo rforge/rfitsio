@@ -120,15 +120,23 @@ IMPLEMENT_FITS_OPEN_FUNC(cfitsio_open_image, fits_open_image)
 
 /* Wrapper to fits_create_file */
 SEXP
-cfitsio_create_file (SEXP file_name)
+cfitsio_create_file (SEXP file_name, SEXP extended_syntax)
 {
     fits_file_t * fits;
     SEXP return_value;
 
     fits = Calloc (1, fits_file_t);
-    fits_create_file (&(fits->cfitsio_ptr),
-		      NM(file_name),
-		      &(fits->status));
+    if (asLogical (extended_syntax))
+    {
+	fits_create_file (&(fits->cfitsio_ptr),
+			  (char *) NM(file_name),
+			  &(fits->status));
+    } else
+    {
+	fits_create_diskfile (&(fits->cfitsio_ptr),
+			      (char *) NM(file_name),
+			      &(fits->status));
+    }
 
     return fits_ptr2SEXP (fits);
 }

@@ -60,9 +60,11 @@ openFITSTable <- function(file.name, mode = "READONLY")
   return (.open(cfitsio_open_table, file.name, mode))
 }
 
-createFITSFile <- function(file.name)
+createFITSFile <- function(file.name, extended.syntax = TRUE)
 {
-  fits.obj <- .Call(cfitsio_create_file, as.character (file.name))
+  fits.obj <- .Call(cfitsio_create_file,
+                    as.character(file.name),
+                    as.logical(extended.syntax))
   class(fits.obj) <- "cfitsio_obj"
 
   if (getErrorStatus(fits.obj) != 0)
