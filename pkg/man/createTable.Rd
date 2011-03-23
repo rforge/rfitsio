@@ -30,7 +30,7 @@
 	\item{column.units}{(Optional) Array of strings specifying the
 	measure unit for this column.}
 
-	\item{extname}{(Optional) Extended name for the table.}
+	\item{ext.name}{(Optional) Extended name for the table.}
 
 	\item{num.of.rows}{(Optional) Number of rows to pre-allocate for the table.}
 
