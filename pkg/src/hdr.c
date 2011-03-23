@@ -150,3 +150,40 @@ cfitsio_read_key (SEXP fits_object, SEXP type_name,
     else
 	return mkString ("");
 }
+
+/********************************************************************/
+
+SEXP
+cfitsio_write_comment_or_history (SEXP fits_object,
+				  SEXP string,
+				  SEXP is_comment)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+    {
+	if (asLogical (is_comment))
+	    fits_write_comment (fits->cfitsio_ptr,
+				(char *) NM(string),
+				&(fits->status));
+	else
+	    fits_write_history (fits->cfitsio_ptr,
+				(char *) NM(string),
+				&(fits->status));
+    }
+
+    return R_NilValue;
+}
+
+/********************************************************************/
+
+SEXP
+cfitsio_write_date (SEXP fits_object)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+
+    if (NULL != fits && NULL != fits->cfitsio_ptr)
+	fits_write_date (fits->cfitsio_ptr, &(fits->status));
+
+    return R_NilValue;
+}

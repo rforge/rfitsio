@@ -283,6 +283,47 @@ readKeyComment <- function(fits.obj, key.name)
   return(result)
 }
 
+writeComment <- function(fits.obj, comment)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_write_comment_or_history, fits.obj,
+               as.character(comment), TRUE)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
+writeHistory <- function(fits.obj, history)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_write_comment_or_history, fits.obj,
+               as.character(comment), FALSE)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
+writeDate <- function(fits.obj)
+{
+  if (! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_write_date, fits.obj)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
 ######################################################################
 # R wrappers to functions in "src/tables.c"
 
