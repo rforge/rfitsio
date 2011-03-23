@@ -483,6 +483,32 @@ deleteRows <- function(fits.obj, rows)
   return(result)
 }
 
+writeColumn <- function(fits.obj,
+                        data.type,
+                        col.num,
+                        first.row,
+                        first.elem,
+                        array,
+                        null.value = NA)
+{
+  if(! is.fits.obj(fits.obj))
+    stop(.message.wrong.fits.obj.type)
+
+  result <- .Call(cfitsio_write_col,
+                  fits.obj,
+                  as.character(data.type),
+                  as.integer(col.num),
+                  as.double(first.row),
+                  as.double(first.elem),
+                  array,
+                  null.value)
+
+  if (getErrorStatus(fits.obj) != 0)
+    warning(getErrorText(fits.obj))
+  
+  return(result)
+}
+
 ######################################################################
 # R wrappers to functions in "src/img.c"
 

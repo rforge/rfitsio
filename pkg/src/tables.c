@@ -544,3 +544,192 @@ cfitsio_delete_rowlist (SEXP fits_object,
     free (row_list);
     return R_NilValue;
 }
+
+/********************************************************************/
+
+SEXP
+cfitsio_write_col (SEXP fits_object,
+		   SEXP data_type_sexp,
+		   SEXP col_num_sexp,
+		   SEXP first_row_sexp,
+		   SEXP first_elem_sexp,
+		   SEXP array_sexp,
+		   SEXP null_value_sexp)
+{
+    fits_file_t * fits = R_ExternalPtrAddr (fits_object);
+    int type;
+    int col_num;
+    LONGLONG first_row;
+    LONGLONG first_elem;
+
+    if (NULL == fits || NULL == fits->cfitsio_ptr)
+	return R_NilValue;
+
+    col_num = INTEGER(col_num_sexp)[0];
+    first_row = (LONGLONG) (REAL(first_row_sexp)[0]);
+    first_elem = (LONGLONG) (REAL(first_elem_sexp)[0]);
+    
+#define PLAIN_WRITE(sexp_macro, c_type, conversion)			\
+    {									\
+	c_type * array;							\
+	LONGLONG i;							\
+									\
+	array = (c_type *) R_alloc (sizeof (c_type),			\
+				    length(array_sexp));		\
+	for (i = 0; i < length(array_sexp); ++i)			\
+	    array[i] = sexp_macro(array_sexp)[i];			\
+									\
+	if (! isNull(null_value_sexp))					\
+	{								\
+	    c_type null_value = conversion(null_value_sexp);		\
+	    fits_write_colnull (fits->cfitsio_ptr, type,		\
+				col_num, first_row, first_elem,		\
+				length(array_sexp),			\
+				(void *) array,				\
+				&null_value,				\
+				&(fits->status));			\
+	} else								\
+	    fits_write_col (fits->cfitsio_ptr, type,			\
+			    col_num, first_row, first_elem,		\
+			    length(array_sexp),				\
+			    (void *) array,				\
+			    &(fits->status));				\
+									\
+	break;								\
+    }
+
+#define COMPLEX_WRITE(c_type)						\
+    {									\
+	c_type * array;							\
+	LONGLONG i;							\
+									\
+	array = (c_type *) R_alloc (sizeof (c_type) * 2,		\
+				    length(array_sexp));		\
+	for (i = 0; i < length(array_sexp); ++i)			\
+	{								\
+	    array[2*i]   = COMPLEX(array_sexp)[i].r;			\
+	    array[2*i+1] = COMPLEX(array_sexp)[i].i;			\
+	}								\
+									\
+	if (! isNull(null_value_sexp))					\
+	{								\
+	    c_type null_value[2];					\
+	    null_value[0] = asComplex(null_value_sexp).r;		\
+	    null_value[1] = asComplex(null_value_sexp).i;		\
+									\
+	    fits_write_colnull (fits->cfitsio_ptr, type,		\
+				col_num, first_row, first_elem,		\
+				length(array_sexp),			\
+				(void *) array,				\
+				&null_value,				\
+				&(fits->status));			\
+	} else								\
+	    fits_write_col (fits->cfitsio_ptr, type,			\
+			    col_num, first_row, first_elem,		\
+			    length(array_sexp),				\
+			    (void *) array,				\
+			    &(fits->status));				\
+									\
+	break;								\
+    }
+
+    /* Initialize ELEMENT_SIZE to the size (in bytes) of one element
+     * in ARRAY */
+    type = type_from_typename (NM (data_type_sexp));
+    switch (type)
+    {
+    case TBIT:
+    {
+	char * array;
+	LONGLONG i;
+
+	array = R_alloc (sizeof (char), length(array_sexp));
+	for (i = 0; i < length(array_sexp); ++i)
+	    array[i] = LOGICAL(array_sexp)[i];
+
+	fits_read_col_bit (fits->cfitsio_ptr, col_num, first_row,
+			   first_elem, length(array_sexp), array,
+			   &(fits->status));
+
+	break;
+    }
+    case TLOGICAL:  PLAIN_WRITE(LOGICAL, unsigned char,  asLogical);
+
+    case TBYTE:     PLAIN_WRITE(INTEGER, unsigned char,  asInteger);
+    case TSBYTE:    PLAIN_WRITE(INTEGER, signed char,    asInteger);
+    case TSHORT:    PLAIN_WRITE(INTEGER, signed short,   asInteger);
+    case TUSHORT:   PLAIN_WRITE(INTEGER, unsigned short, asInteger);
+    case TINT:      PLAIN_WRITE(INTEGER, signed int,     asInteger);
+    case TUINT:     PLAIN_WRITE(INTEGER, unsigned int,   asInteger);
+    case TLONG:     
+    {
+	if (sizeof (long) <= sizeof(int))
+	{
+	    PLAIN_WRITE(INTEGER, signed long, asInteger);
+	}
+	else
+	{
+	    PLAIN_WRITE(REAL, signed long, asReal);
+	}
+    }
+
+    case TULONG:
+    {
+	if (sizeof (long) <= sizeof(int))
+	{
+	    PLAIN_WRITE(INTEGER, unsigned long, asInteger);
+	}
+	else
+	{
+	    PLAIN_WRITE(REAL, unsigned long, asReal);
+	}
+    }
+
+    case TLONGLONG: 
+    {
+	if (sizeof (LONGLONG) <= sizeof(int))
+	{
+	    PLAIN_WRITE(INTEGER, LONGLONG, asInteger);
+	}
+	else
+	{
+	    PLAIN_WRITE(REAL, LONGLONG, asReal);
+	}
+    }
+
+    case TFLOAT:  PLAIN_WRITE(REAL, float,  asReal);
+    case TDOUBLE: PLAIN_WRITE(REAL, double, asReal);
+
+    case TSTRING: {
+	char ** array;
+	LONGLONG i;
+
+	array = (char **) R_alloc (sizeof (char *), length(array_sexp));
+	for (i = 0; i < length(array_sexp); ++i)
+	    array[i] = (char *) CHAR(STRING_ELT(array_sexp,i));
+
+	/* Read the column */
+	if (! isNull (null_value_sexp))
+	{
+	    fits_write_colnull_str (fits->cfitsio_ptr, col_num, first_row,
+				    first_elem, length(array_sexp),
+				    array, (char *) NM(asChar(null_value_sexp)),
+				    &(fits->status));
+	} else
+	{
+	    fits_write_col_str (fits->cfitsio_ptr, col_num, first_row,
+				first_elem, length(array_sexp),
+				array, &(fits->status));
+	}
+
+	break;
+    }
+
+    case TCOMPLEX:	COMPLEX_WRITE(float);
+    case TDBLCOMPLEX:	COMPLEX_WRITE(double);
+    default:
+	error ("Invalid value for 'data.type' in readColumn"); 
+    }
+
+    return R_NilValue;
+}
