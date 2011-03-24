@@ -53,7 +53,8 @@
 
 }
 \seealso{
-	\code{\link{getNumOfRows}}, \code{\link{getNumOfColumns}}, \code{\link{getErrorStatus}}.
+	\code{writeColumn}, \code{\link{getNumOfRows}},
+	\code{\link{getNumOfColumns}}, \code{\link{getErrorStatus}}.
 }
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
