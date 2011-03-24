@@ -34,7 +34,7 @@ if (getErrorStatus(fits.obj) == 0) {
   q()
 }
 
-createTable(fits.obj, c("1D", "1I"), c("FLOAT", "INT"))
+createTable(fits.obj, c("FLOAT", "INT"), c("1D", "1I"))
 
 insertRows(fits.obj, 0, 10)
 getNumOfRows(fits.obj) == 10
