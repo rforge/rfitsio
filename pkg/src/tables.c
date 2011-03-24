@@ -285,7 +285,7 @@ cfitsio_read_col (SEXP fits_object,
 	char * array;
 	int i;
 
-	array = malloc (sizeof (char *) * num_of_elements);
+	array = malloc (sizeof (char) * num_of_elements);
 	fits_read_col_bit (fits->cfitsio_ptr, column, first_row,
 			   first_element, num_of_elements, array,
 			   &(fits->status));
