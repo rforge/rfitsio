@@ -549,29 +549,30 @@ cfitsio_write_col (SEXP fits_object,
     first_row = (LONGLONG) (REAL(first_row_sexp)[0]);
     first_elem = (LONGLONG) (REAL(first_elem_sexp)[0]);
     
-#define PLAIN_WRITE(sexp_macro, c_type, conversion)			\
+#define PLAIN_WRITE(sexp_macro, c_type, r_conv, c_conv)			\
     {									\
+	SEXP conv_sexp = r_conv(array_sexp);				\
 	c_type * array;							\
 	LONGLONG i;							\
 									\
 	array = (c_type *) R_alloc (sizeof (c_type),			\
-				    length(array_sexp));		\
-	for (i = 0; i < length(array_sexp); ++i)			\
-	    array[i] = sexp_macro(array_sexp)[i];			\
+				    length(conv_sexp));			\
+	for (i = 0; i < length(conv_sexp); ++i)				\
+	    array[i] = sexp_macro(conv_sexp)[i];			\
 									\
 	if (! isNull(null_value_sexp))					\
 	{								\
-	    c_type null_value = conversion(null_value_sexp);		\
+	    c_type null_value = c_conv(null_value_sexp);		\
 	    fits_write_colnull (fits->cfitsio_ptr, type,		\
 				col_num, first_row, first_elem,		\
-				length(array_sexp),			\
+				length(conv_sexp),			\
 				(void *) array,				\
 				&null_value,				\
 				&(fits->status));			\
 	} else								\
 	    fits_write_col (fits->cfitsio_ptr, type,			\
 			    col_num, first_row, first_elem,		\
-			    length(array_sexp),				\
+			    length(conv_sexp),				\
 			    (void *) array,				\
 			    &(fits->status));				\
 									\
@@ -580,15 +581,16 @@ cfitsio_write_col (SEXP fits_object,
 
 #define COMPLEX_WRITE(c_type)						\
     {									\
+	SEXP conv_sexp = AS_COMPLEX(array_sexp);			\
 	c_type * array;							\
 	LONGLONG i;							\
 									\
 	array = (c_type *) R_alloc (sizeof (c_type) * 2,		\
-				    length(array_sexp));		\
-	for (i = 0; i < length(array_sexp); ++i)			\
+				    length(conv_sexp));			\
+	for (i = 0; i < length(conv_sexp); ++i)				\
 	{								\
-	    array[2*i]   = COMPLEX(array_sexp)[i].r;			\
-	    array[2*i+1] = COMPLEX(array_sexp)[i].i;			\
+	    array[2*i]   = COMPLEX(conv_sexp)[i].r;			\
+	    array[2*i+1] = COMPLEX(conv_sexp)[i].i;			\
 	}								\
 									\
 	if (! isNull(null_value_sexp))					\
@@ -599,14 +601,14 @@ cfitsio_write_col (SEXP fits_object,
 									\
 	    fits_write_colnull (fits->cfitsio_ptr, type,		\
 				col_num, first_row, first_elem,		\
-				length(array_sexp),			\
+				length(conv_sexp),			\
 				(void *) array,				\
 				&null_value,				\
 				&(fits->status));			\
 	} else								\
 	    fits_write_col (fits->cfitsio_ptr, type,			\
 			    col_num, first_row, first_elem,		\
-			    length(array_sexp),				\
+			    length(conv_sexp),				\
 			    (void *) array,				\
 			    &(fits->status));				\
 									\
@@ -620,85 +622,54 @@ cfitsio_write_col (SEXP fits_object,
     {
     case TBIT:
     {
+	SEXP conv_sexp = AS_LOGICAL(array_sexp);
 	char * array;
 	LONGLONG i;
 
-	array = R_alloc (sizeof (char), length(array_sexp));
-	for (i = 0; i < length(array_sexp); ++i)
-	    array[i] = LOGICAL(array_sexp)[i];
+	array = R_alloc (sizeof (char), length(conv_sexp));
+	for (i = 0; i < length(conv_sexp); ++i)
+	    array[i] = LOGICAL(conv_sexp)[i];
 
 	fits_read_col_bit (fits->cfitsio_ptr, col_num, first_row,
-			   first_elem, length(array_sexp), array,
+			   first_elem, length(conv_sexp), array,
 			   &(fits->status));
 
 	break;
     }
-    case TLOGICAL:  PLAIN_WRITE(LOGICAL, unsigned char,  asLogical);
 
-    case TBYTE:     PLAIN_WRITE(INTEGER, unsigned char,  asInteger);
-    case TSBYTE:    PLAIN_WRITE(INTEGER, signed char,    asInteger);
-    case TSHORT:    PLAIN_WRITE(INTEGER, signed short,   asInteger);
-    case TUSHORT:   PLAIN_WRITE(INTEGER, unsigned short, asInteger);
-    case TINT:      PLAIN_WRITE(INTEGER, signed int,     asInteger);
-    case TUINT:     PLAIN_WRITE(INTEGER, unsigned int,   asInteger);
-    case TLONG:     
-    {
-	if (sizeof (long) <= sizeof(int))
-	{
-	    PLAIN_WRITE(INTEGER, signed long, asInteger);
-	}
-	else
-	{
-	    PLAIN_WRITE(REAL, signed long, asReal);
-	}
-    }
-
-    case TULONG:
-    {
-	if (sizeof (long) <= sizeof(int))
-	{
-	    PLAIN_WRITE(INTEGER, unsigned long, asInteger);
-	}
-	else
-	{
-	    PLAIN_WRITE(REAL, unsigned long, asReal);
-	}
-    }
-
-    case TLONGLONG: 
-    {
-	if (sizeof (LONGLONG) <= sizeof(int))
-	{
-	    PLAIN_WRITE(INTEGER, LONGLONG, asInteger);
-	}
-	else
-	{
-	    PLAIN_WRITE(REAL, LONGLONG, asReal);
-	}
-    }
-
-    case TFLOAT:  PLAIN_WRITE(REAL, float,  asReal);
-    case TDOUBLE: PLAIN_WRITE(REAL, double, asReal);
+    case TLOGICAL:  PLAIN_WRITE(LOGICAL, unsigned char,  AS_LOGICAL, asLogical);
+    case TBYTE:     PLAIN_WRITE(INTEGER, unsigned char,  AS_INTEGER, asInteger);
+    case TSBYTE:    PLAIN_WRITE(INTEGER, signed char,    AS_INTEGER, asInteger);
+    case TSHORT:    PLAIN_WRITE(INTEGER, signed short,   AS_INTEGER, asInteger);
+    case TUSHORT:   PLAIN_WRITE(INTEGER, unsigned short, AS_INTEGER, asInteger);
+    case TINT:      PLAIN_WRITE(INTEGER, signed int,     AS_INTEGER, asInteger);
+    case TUINT:     PLAIN_WRITE(INTEGER, unsigned int,   AS_INTEGER, asInteger);
+    case TLONG:     PLAIN_WRITE(REAL,    signed long,    AS_NUMERIC, asReal);
+    case TULONG:    PLAIN_WRITE(REAL,    unsigned long,  AS_NUMERIC, asReal);
+    case TLONGLONG: PLAIN_WRITE(REAL,    LONGLONG,       AS_NUMERIC, asReal);
+    case TFLOAT:    PLAIN_WRITE(REAL,    float,          AS_NUMERIC, asReal);
+    case TDOUBLE:   PLAIN_WRITE(REAL,    double,         AS_NUMERIC, asReal);
 
     case TSTRING: {
+	SEXP conv_sexp = AS_CHARACTER(array_sexp);
 	char ** array;
 	LONGLONG i;
 
-	array = (char **) R_alloc (sizeof (char *), length(array_sexp));
-	for (i = 0; i < length(array_sexp); ++i)
-	    array[i] = (char *) CHAR(STRING_ELT(array_sexp,i));
+	array = (char **) R_alloc (sizeof (char *), length(conv_sexp));
+	for (i = 0; i < length(conv_sexp); ++i)
+	    array[i] = (char *) CHAR(STRING_ELT(conv_sexp, i));
 
 	/* Read the column */
 	if (! isNull (null_value_sexp))
 	{
 	    fits_write_colnull_str (fits->cfitsio_ptr, col_num, first_row,
-				    first_elem, length(array_sexp),
+				    first_elem, length(conv_sexp),
 				    array, (char *) NM(asChar(null_value_sexp)),
 				    &(fits->status));
 	} else
 	{
 	    fits_write_col_str (fits->cfitsio_ptr, col_num, first_row,
-				first_elem, length(array_sexp),
+				first_elem, length(conv_sexp),
 				array, &(fits->status));
 	}
 
