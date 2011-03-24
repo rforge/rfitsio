@@ -216,7 +216,7 @@ cfitsio_read_col (SEXP fits_object,
     num_of_elements = asInteger (num_of_elements_sexp);
 
     /* This will hold the positions of the NA elements in ARRAY */
-    null_array = malloc (sizeof (int) * num_of_elements);
+    null_array = (char *) R_alloc (sizeof (int), num_of_elements);
 
 #define PLAIN_COPY(sexp_type, sexp_macro, c_type, NA)			\
     {									\
@@ -224,7 +224,7 @@ cfitsio_read_col (SEXP fits_object,
 	c_type * array;							\
 	int i;								\
 									\
-	array = malloc (sizeof (c_type) * num_of_elements);		\
+	array = (c_type *) R_alloc (sizeof (c_type), num_of_elements);	\
 	fits_read_colnull (fits->cfitsio_ptr, type,			\
 		           column, first_row, first_element,		\
 		           num_of_elements, (void *) array,		\
@@ -236,9 +236,6 @@ cfitsio_read_col (SEXP fits_object,
 	    sexp_macro(result)[i] = null_array[i] ? NA : array[i];      \
 	UNPROTECT(1);							\
 									\
-	free (array);							\
-	free (null_array);						\
-									\
 	return result;							\
     }
 
@@ -248,7 +245,8 @@ cfitsio_read_col (SEXP fits_object,
 	c_type * array;							\
 	int i;								\
 									\
-	array = malloc (sizeof (c_type) * 2 * num_of_elements);		\
+	array = (c_type *) R_alloc (sizeof (c_type) * 2,		\
+				    num_of_elements);			\
 	fits_read_colnull (fits->cfitsio_ptr, type,			\
 		           column, first_row, first_element,		\
 		           num_of_elements, (void *) array,		\
@@ -269,9 +267,6 @@ cfitsio_read_col (SEXP fits_object,
 	}								\
 	UNPROTECT(1);							\
 									\
-	free (array);							\
-	free (null_array);						\
-									\
 	return result;							\
     }
 
@@ -285,7 +280,7 @@ cfitsio_read_col (SEXP fits_object,
 	char * array;
 	int i;
 
-	array = malloc (sizeof (char) * num_of_elements);
+	array = (char *) R_alloc (sizeof (char), num_of_elements);
 	fits_read_col_bit (fits->cfitsio_ptr, column, first_row,
 			   first_element, num_of_elements, array,
 			   &(fits->status));
@@ -294,9 +289,6 @@ cfitsio_read_col (SEXP fits_object,
 	for (i = 0; i < num_of_elements; ++i)
 	   LOGICAL(result)[i] = array[i];
 	UNPROTECT(1);
-
-	free (array);
-	free (null_array);
 
 	return result;
     }
@@ -360,9 +352,9 @@ cfitsio_read_col (SEXP fits_object,
 			    &repeat, &width, &(fits->status));
 
 	/* Allocate room for each string */
-	array = malloc (sizeof (char *) * num_of_elements);
+	array = (char **) R_alloc (sizeof (char *), num_of_elements);
 	for (i = 0; i < num_of_elements; ++i)
-	    array[i] = malloc (sizeof (char) * width);
+	    array[i] = (char *) R_alloc (sizeof (char), width);
 
 	/* Read the column */
 	fits_read_col_str (fits->cfitsio_ptr, column, first_row,
@@ -374,13 +366,6 @@ cfitsio_read_col (SEXP fits_object,
 	for (i = 0; i < num_of_elements; ++i)
 	    SET_STRING_ELT(result_array, i, mkChar (array[i]));
 	UNPROTECT(1);
-
-	/* Free the memory allocated for the C strings */
-	for (i = 0; i < num_of_elements; ++i)
-	    free (array[i]);
-
-	free (array);
-	free (null_array);
 
 	return result_array;
     }
@@ -414,10 +399,10 @@ cfitsio_create_tbl (SEXP fits_object,
     if (NULL == fits || NULL == fits->cfitsio_ptr)
 	return R_NilValue;
 
-    ttype_array = (char **) malloc (sizeof (char *) * length (ttype));
-    tform_array = (char **) malloc (sizeof (char *) * length (ttype));
+    ttype_array = (char **) R_alloc (sizeof (char *), length (ttype));
+    tform_array = (char **) R_alloc (sizeof (char *), length (ttype));
     if (length(tunit) > 0)
-	tunit_array = (char **) malloc (sizeof (char *) * length (ttype));
+	tunit_array = (char **) R_alloc (sizeof (char *), length (ttype));
     else
 	tunit_array = NULL;
 
@@ -438,10 +423,6 @@ cfitsio_create_tbl (SEXP fits_object,
 		     tunit_array,
 		     (char *) NM(extname),
 		     &(fits->status));
-
-    free (ttype_array);
-    free (tform_array);
-    free (tunit_array);
 
     return R_NilValue;
 }
@@ -532,7 +513,7 @@ cfitsio_delete_rowlist (SEXP fits_object,
     if (NULL == fits || NULL == fits->cfitsio_ptr)
 	return R_NilValue;
 
-    row_list = malloc (length (row_list_sexp) * sizeof (long));
+    row_list = (LONGLONG *) R_alloc (length (row_list_sexp), sizeof (long));
     for (i = 0; i < length (row_list_sexp); ++i)
 	row_list[i] = (LONGLONG) (REAL(row_list_sexp)[i]);
 
@@ -541,7 +522,6 @@ cfitsio_delete_rowlist (SEXP fits_object,
 			   length (row_list_sexp),
 			   &(fits->status));
 
-    free (row_list);
     return R_NilValue;
 }
 
