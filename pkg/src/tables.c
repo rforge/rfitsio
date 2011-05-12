@@ -651,25 +651,24 @@ cfitsio_write_col (SEXP fits_object,
     case TDOUBLE:   PLAIN_WRITE(REAL,    double,         AS_NUMERIC, asReal);
 
     case TSTRING: {
-	SEXP conv_sexp = AS_CHARACTER(array_sexp);
 	char ** array;
 	LONGLONG i;
 
-	array = (char **) R_alloc (sizeof (char *), length(conv_sexp));
-	for (i = 0; i < length(conv_sexp); ++i)
-	    array[i] = (char *) CHAR(STRING_ELT(conv_sexp, i));
+	array = (char **) R_alloc (sizeof (char *), length(array_sexp));
+	for (i = 0; i < length(array_sexp); ++i)
+	    array[i] = (char *) CHAR(STRING_ELT(array_sexp, i));
 
 	/* Read the column */
 	if (! isNull (null_value_sexp))
 	{
 	    fits_write_colnull_str (fits->cfitsio_ptr, col_num, first_row,
-				    first_elem, length(conv_sexp),
+				    first_elem, length(array_sexp),
 				    array, (char *) NM(asChar(null_value_sexp)),
 				    &(fits->status));
 	} else
 	{
 	    fits_write_col_str (fits->cfitsio_ptr, col_num, first_row,
-				first_elem, length(conv_sexp),
+				first_elem, length(array_sexp),
 				array, &(fits->status));
 	}
 
