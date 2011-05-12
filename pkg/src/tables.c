@@ -377,6 +377,8 @@ cfitsio_read_col (SEXP fits_object,
 	return R_NilValue;
     }
 }
+#undef PLAIN_COPY
+#undef COMPLEX_COPY
 
 /********************************************************************/
 
@@ -683,3 +685,5 @@ cfitsio_write_col (SEXP fits_object,
 
     return R_NilValue;
 }
+#undef PLAIN_WRITE
+#undef COMPLEX_WRITE
