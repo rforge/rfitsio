@@ -43,6 +43,9 @@
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- createFITSFile(tempfile("rfitsio"))
-createTable(fits.obj, c("COUNTS", "AVERAGE"), c("1I", "1D"), c("Pure number", "Meters"))
+createTable(fits.obj,
+            c("COUNTS", "AVERAGE"),
+	    c("1I", "1D"),
+	    c("Pure number", "Meters"))
 closeFITSFile(fits.obj)
 }
