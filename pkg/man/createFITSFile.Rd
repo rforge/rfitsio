@@ -33,5 +33,6 @@
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- createFITSFile(tempfile("rfitsio"))
+closeFITSFile(fits.obj)
 rm(fits.obj)
 }
