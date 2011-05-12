@@ -37,7 +37,10 @@
 \author{Maurizio Tomasi \email{maurizio.tomasi@unimi.it}}
 \examples{
 fits.obj <- createFITSFile(tempfile("rfitsio"))
-createTable(fits.obj, c("1I", "1D"), c("COUNTS", "AVERAGE"), c("Pure number", "Meters"))
+createTable(fits.obj,
+            c("1I", "1D"),
+	    c("COUNTS", "AVERAGE"),
+	    c("Pure number", "Meters"))
 # Insert new rows and immediately remove some of them
 # (A bit silly...)
 insertRows(fits.obj, 0, 100)
