@@ -223,12 +223,13 @@ cfitsio_read_col (SEXP fits_object,
 	SEXP result;							\
 	c_type * array;							\
 	int i;								\
+	int any_null_value; /* Not used */				\
 									\
 	array = (c_type *) R_alloc (sizeof (c_type), num_of_elements);	\
 	fits_read_colnull (fits->cfitsio_ptr, type,			\
 		           column, first_row, first_element,		\
 		           num_of_elements, (void *) array,		\
-		           null_array, NULL,				\
+		           null_array, &any_null_value,			\
 		           &(fits->status));				\
 									\
 	PROTECT(result = allocVector (sexp_type, num_of_elements));	\
@@ -244,13 +245,14 @@ cfitsio_read_col (SEXP fits_object,
 	SEXP result;							\
 	c_type * array;							\
 	int i;								\
+	int any_null_value; /* Not used */				\
 									\
 	array = (c_type *) R_alloc (sizeof (c_type) * 2,		\
 				    num_of_elements);			\
 	fits_read_colnull (fits->cfitsio_ptr, type,			\
 		           column, first_row, first_element,		\
 		           num_of_elements, (void *) array,		\
-		           null_array, NULL,				\
+		           null_array, &any_null_value,			\
 		           &(fits->status));				\
 									\
 	PROTECT(result = allocVector (CPLXSXP, num_of_elements));	\
