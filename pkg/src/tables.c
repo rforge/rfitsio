@@ -216,7 +216,7 @@ cfitsio_read_col (SEXP fits_object,
     num_of_elements = asInteger (num_of_elements_sexp);
 
     /* This will hold the positions of the NA elements in ARRAY */
-    null_array = (char *) R_alloc (sizeof (int), num_of_elements);
+    null_array = (char *) R_alloc (sizeof (null_array[0]), num_of_elements);
 
 #define PLAIN_COPY(sexp_type, sexp_macro, c_type, NA)			\
     {									\
