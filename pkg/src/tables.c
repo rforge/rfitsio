@@ -554,17 +554,22 @@ cfitsio_write_col (SEXP fits_object,
 #define PLAIN_WRITE(sexp_macro, c_type, r_conv, c_conv)			\
     {									\
 	SEXP conv_sexp = r_conv(array_sexp);				\
+	c_type null_value = c_conv(null_value_sexp);			\
 	c_type * array;							\
 	LONGLONG i;							\
 									\
 	array = (c_type *) R_alloc (sizeof (c_type),			\
 				    length(conv_sexp));			\
-	for (i = 0; i < length(conv_sexp); ++i)				\
-	    array[i] = sexp_macro(conv_sexp)[i];			\
+	for (i = 0; i < length(conv_sexp); ++i)	{			\
+	    c_type cur_value = sexp_macro(conv_sexp)[i];		\
+	    if (R_finite(cur_value))					\
+		array[i] = sexp_macro(conv_sexp)[i];			\
+	    else							\
+		array[i] = null_value;					\
+	}								\
 									\
 	if (! isNull(null_value_sexp))					\
 	{								\
-	    c_type null_value = c_conv(null_value_sexp);		\
 	    fits_write_colnull (fits->cfitsio_ptr, type,		\
 				col_num, first_row, first_elem,		\
 				length(conv_sexp),			\
@@ -584,8 +589,12 @@ cfitsio_write_col (SEXP fits_object,
 #define COMPLEX_WRITE(c_type)						\
     {									\
 	SEXP conv_sexp = AS_COMPLEX(array_sexp);			\
+	c_type null_value[2];						\
 	c_type * array;							\
 	LONGLONG i;							\
+									\
+	null_value[0] = asComplex(null_value_sexp).r;			\
+	null_value[1] = asComplex(null_value_sexp).i;			\
 									\
 	array = (c_type *) R_alloc (sizeof (c_type) * 2,		\
 				    length(conv_sexp));			\
@@ -597,10 +606,6 @@ cfitsio_write_col (SEXP fits_object,
 									\
 	if (! isNull(null_value_sexp))					\
 	{								\
-	    c_type null_value[2];					\
-	    null_value[0] = asComplex(null_value_sexp).r;		\
-	    null_value[1] = asComplex(null_value_sexp).i;		\
-									\
 	    fits_write_colnull (fits->cfitsio_ptr, type,		\
 				col_num, first_row, first_elem,		\
 				length(conv_sexp),			\
