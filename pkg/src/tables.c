@@ -211,9 +211,9 @@ cfitsio_read_col (SEXP fits_object,
 	return R_NilValue;
 
     column          = asInteger (column_sexp);
-    first_row       = asInteger (first_row_sexp);
-    first_element   = asInteger (first_element_sexp);
-    num_of_elements = asInteger (num_of_elements_sexp);
+    first_row       = (LONGLONG) (asReal (first_row_sexp));
+    first_element   = (LONGLONG) (asReal (first_element_sexp));
+    num_of_elements = (LONGLONG) (asReal (num_of_elements_sexp));
 
     /* This will hold the positions of the NA elements in ARRAY */
     null_array = (char *) R_alloc (sizeof (null_array[0]), num_of_elements);
