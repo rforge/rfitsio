@@ -1,51 +1,41 @@
-
-<!-- This is the project specific website template -->
-<!-- It can be changed as liked or replaced by other content -->
-
-<?php
-
-$domain=ereg_replace('[^\.]*\.(.*)$','\1',$_SERVER['HTTP_HOST']);
-$group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
-$themeroot='http://r-forge.r-project.org/themes/rforge/';
-
-echo '<?xml version="1.0" encoding="UTF-8"?>';
-?>
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en   ">
-
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title><?php echo $group_name; ?></title>
-	<link href="<?php echo $themeroot; ?>styles/estilo1.css" rel="stylesheet" type="text/css" />
-  </head>
+<!-- -*- nxml-mode -*- -->
+<!doctype html>
+<html>
+<head>
+  <title>rfitsio</title>
+  <link rel="stylesheet" href="css/master.css" type="text/css" media="screen"/> 
+</head>
 
 <body>
+  <header>
+    <h1>rfitsio</h1>
+  </header>
 
-<!-- R-Forge Logo -->
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr><td>
-<a href="http://r-forge.r-project.org/"><img src="http://<?php echo $themeroot; ?>/images/logo.png" border="0" alt="R-Forge Logo" /> </a> </td> </tr>
-</table>
+  <?php include("includes/nav.html"); ?>
 
+  <section id="intro">
+    <header>
+      <h2>R bindings to the CFITSIO library</h2>
+    </header>
+    <p><tt>rfitsio</tt> is a R wrapper to the CFITSIO library. It
+    allows to read and write FITS files containing images and
+    ASCII/binary tables.</p>
+  </section>
+  <section>
+    <p>Welcome to the homepage of the <tt>rfitsio</tt> library.
+    <tt>rfitsio</tt> is a library which allows programs written in GNU
+    R to read and write files in the FITS format.</p>
 
-<!-- get project title  -->
-<!-- own website starts here, the following may be changed as you like -->
-
-<?php if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')){
-$contents = '';
-while (!feof($handle)) {
-	$contents .= fread($handle, 8192);
-}
-fclose($handle);
-echo $contents; } ?>
-
-<!-- end of project description -->
-
-<p> No content added. </p>
-
-<p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
-
+    <p>The library is low-level, in the sense that it does not provide
+    (yet) high-level functions. Almost every function provided by
+    <tt>rfitsio</tt> maps one-to-one with functions in the CFITSIO
+    library.</p>
+  </section>
+  <aside>
+    Sidebar
+  </aside>
+  <footer>
+    Footer
+  </footer>
 </body>
 </html>

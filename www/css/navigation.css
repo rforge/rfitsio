@@ -1,0 +1,51 @@
+/**********************************************************************/
+/* Navigation bar */
+
+nav {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #202020;
+}
+
+nav ul {
+    margin: 0 auto;
+    width: 920px;
+    list-style: none;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li a {
+    display: block;
+    margin-right: 20px;
+    width: 110px;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: #A0A0A0;
+}
+
+nav ul li a:hover {
+    color: #fff;
+}
+
+nav ul li.selected a {
+    color: #fff;
+}
+
+#intro {
+    margin-top: 66px;
+    padding: 22px;
+    background: #A0A0A0;
+    border-radius: 22px;
+}
+
+#intro h2 {
+    padding: 0 0 22px 0;
+    font-weight: normal;
+    color: #fff;
+}
