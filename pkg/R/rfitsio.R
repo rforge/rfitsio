@@ -432,7 +432,7 @@ createTable <- function(fits.obj, column.types, column.form,
   fn <- if(binary) cfitsio_create_binary_tbl else cfitsio_create_ascii_tbl
   result <- .Call(fn,
                   fits.obj,
-                  as.real(num.of.rows),
+                  as.double(num.of.rows),
                   as.character(column.types),
                   as.character(column.form),
                   as.character(column.units),
